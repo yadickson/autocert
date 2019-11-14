@@ -45,8 +45,20 @@ import org.bouncycastle.x509.X509V3CertificateGenerator;
  */
 public final class Generator {
 
+    /**
+     * Provider name.
+     */
     private final static String PROVIDER = BouncyCastleProvider.PROVIDER_NAME;
 
+    /**
+     * Create pair certificates.
+     *
+     * @param algorithm algorithm name.
+     * @param keySize key size.
+     * @param log logger.
+     * @return key pair.
+     * @throws MojoExecutionException if error.
+     */
     public KeyPair createPair(
             final String algorithm,
             final Integer keySize,
@@ -88,6 +100,14 @@ public final class Generator {
         }
     }
 
+    /**
+     * Getter private key.
+     *
+     * @param privateKey private key.
+     * @param log logger.
+     * @return byte array private key.
+     * @throws MojoExecutionException if error.
+     */
     public byte[] getPrivateKey(
             final PrivateKey privateKey,
             final Log log
@@ -95,6 +115,14 @@ public final class Generator {
         return getPrivateKeySpec(privateKey, log).getEncoded();
     }
 
+    /**
+     * Getter public key.
+     *
+     * @param publicKey public key.
+     * @param log logger.
+     * @return byte array public key.
+     * @throws MojoExecutionException if error.
+     */
     public byte[] getPublicKey(
             final PublicKey publicKey,
             final Log log
@@ -102,6 +130,14 @@ public final class Generator {
         return getPublicKeySpec(publicKey, log).getEncoded();
     }
 
+    /**
+     * Getter private key.
+     *
+     * @param privateKey private key.
+     * @param log logger.
+     * @return byte array private key.
+     * @throws MojoExecutionException if error.
+     */
     public PKCS8EncodedKeySpec getPrivateKeySpec(
             final PrivateKey privateKey,
             final Log log
@@ -122,6 +158,14 @@ public final class Generator {
         }
     }
 
+    /**
+     * Getter public key.
+     *
+     * @param publicKey public key.
+     * @param log logger.
+     * @return byte array public key.
+     * @throws MojoExecutionException if error.
+     */
     public X509EncodedKeySpec getPublicKeySpec(
             final PublicKey publicKey,
             final Log log
@@ -142,13 +186,26 @@ public final class Generator {
         }
     }
 
+    /**
+     * Create certificate key.
+     *
+     * @param publicKey public key.
+     * @param privateKey private key.
+     * @param signature signature algorithm.
+     * @param issuerDN issuer DN.
+     * @param subjectDN subject DN.
+     * @param years years validity
+     * @param log logger.
+     * @return certificate key.
+     * @throws MojoExecutionException if error.
+     */
     public byte[] getCertKey(
             final PublicKey publicKey,
             final PrivateKey privateKey,
             final String signature,
             final String issuerDN,
             final String subjectDN,
-            final Integer yearsValidity,
+            final Integer years,
             final Log log
     ) throws MojoExecutionException {
 
@@ -159,7 +216,7 @@ public final class Generator {
 
             long millis = System.currentTimeMillis();
             long before = millis - 24 * 60 * 60 * 1000;
-            long to = millis + yearsValidity * 365 * 24 * 60 * 60 * 1000;
+            long to = millis + years * 365 * 24 * 60 * 60 * 1000;
 
             certGen.setSerialNumber(BigInteger.valueOf(millis));
             certGen.setIssuerDN(new X509Name(issuerDN));
@@ -193,6 +250,15 @@ public final class Generator {
         }
     }
 
+    /**
+     * Create AES secret key.
+     *
+     * @param privateKey private key.
+     * @param publicKey public key.
+     * @param log logger.
+     * @return aes secret key.
+     * @throws MojoExecutionException if error.
+     */
     public SecretKey getSecretKey(
             final PrivateKey privateKey,
             final PublicKey publicKey,

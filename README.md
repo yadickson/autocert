@@ -30,19 +30,43 @@ Maven plugin to generate certificate resources in compilation time.
                 <goal>generator</goal>
             </goals>
             <configuration>
-                <certFile>...</certFile>
+                <pubFile>...</pubFile>
                 <keyFile>...</keyFile>
+                <certFile>...</certFile>
                 <algorithm>...</algorithm>
                 <signature>...</signature>
                 <keySize>...</keySize>
-                <yearsValidity>...</yearsValidity>
+                <years>...</years>
+                <issuerDN>...</issuerDN>
+                <subjectDN>...</subjectDN>
+                <directory>...</directory>
+                <outputDirectory>...</outputDirectory>
             </configuration>
         </execution>
     </executions>
 </plugin>
 ```
 
-## algorithm
+### pubFile (default: pub.pem)
+
+```
+Public file name.
+```
+
+### keyFile (default: key.pem)
+
+```
+Private file name.
+```
+
+
+### certFile (default: cert.pem)
+
+```
+Certificate file name.
+```
+
+### algorithm (default: RSA)
 
 ```
 RSA
@@ -51,25 +75,58 @@ ECDSA
 ECDH
 ```
 
-## signature
+### signature (default: SHA256withRSA)
 
 ```
 SHA256withRSA
 SHA256withECDSA
 ```
 
-## keySize
+### keySize (default: 1024)
 
 ```
 RSA [1024, 2048, 4096, ..]
 EC, ECDSA, ECDH [256, 384, 521]
 ```
 
-## yearsValidity
+### years (default: 1)
 
 ```
 >= 1
 ```
+
+### issuerDN (default: cn=domain)
+
+```
+Issuer DN
+```
+
+### subjectDN (default: cn=main)
+
+```
+Subject DN
+```
+
+### directory (default: .)
+
+```
+Resource directory folder.
+```
+
+### outputDirectory (default: ${project.build.directory}/generated-resources)
+
+```
+Resource output directory folder.
+```
+
+## Command line support
+
+> mvn clean package -Dautocert.pubFile=... -Dautocert.keyFile=... -Dautocert.certFile=... -Dautocert.algorithm=... -Dautocert.signature=... -Dautocert.keySize=... -Dautocert.years=... -Dautocert.issuerDN=... -Dautocert.subjectDN=... -Dautocert.directory=...
+
+License
+-------
+
+GPL-3.0 © [Yadickson Soto](https://github.com/yadickson)
 
 [travis-image]: https://travis-ci.org/yadickson/autocert.svg?branch=master
 [travis-url]: https://travis-ci.org/yadickson/autocert

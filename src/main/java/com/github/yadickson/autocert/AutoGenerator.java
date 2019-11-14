@@ -54,7 +54,8 @@ public final class AutoGenerator extends AbstractMojo {
      */
     @Parameter(
             property = "autocert.pubFile",
-            required = true)
+            required = false,
+            defaultValue = "pub.pem")
     private String pubFile;
 
     /**
@@ -62,7 +63,8 @@ public final class AutoGenerator extends AbstractMojo {
      */
     @Parameter(
             property = "autocert.keyFile",
-            required = true)
+            required = false,
+            defaultValue = "key.pem")
     private String keyFile;
 
     /**
@@ -70,7 +72,8 @@ public final class AutoGenerator extends AbstractMojo {
      */
     @Parameter(
             property = "autocert.certFile",
-            required = true)
+            required = false,
+            defaultValue = "cert.pem")
     private String certFile;
 
     /**
@@ -78,7 +81,8 @@ public final class AutoGenerator extends AbstractMojo {
      */
     @Parameter(
             property = "autocert.algorithm",
-            required = true)
+            required = false,
+            defaultValue = "RSA")
     private String algorithm;
 
     /**
@@ -86,7 +90,8 @@ public final class AutoGenerator extends AbstractMojo {
      */
     @Parameter(
             property = "autocert.keySize",
-            required = true)
+            required = false,
+            defaultValue = "1024")
     private Integer keySize;
 
     /**
@@ -94,17 +99,18 @@ public final class AutoGenerator extends AbstractMojo {
      */
     @Parameter(
             property = "autocert.signature",
-            required = true)
+            required = false,
+            defaultValue = "SHA256withRSA")
     private String signature;
 
     /**
      * Years validity.
      */
     @Parameter(
-            property = "autocert.yearsValidity",
+            property = "autocert.years",
             required = false,
             defaultValue = "1")
-    private Integer yearsValidity;
+    private Integer years;
 
     /**
      * Issuer DN.
@@ -130,7 +136,7 @@ public final class AutoGenerator extends AbstractMojo {
     @Parameter(
             property = "autocert.directory",
             required = false,
-            defaultValue = "./")
+            defaultValue = ".")
     private String directory;
 
     /**
@@ -159,7 +165,7 @@ public final class AutoGenerator extends AbstractMojo {
         getLog().info("[AutoGenerator] KeySize: " + keySize);
         getLog().info("[AutoGenerator] IssuerDN: " + issuerDN);
         getLog().info("[AutoGenerator] SubjectDN: " + subjectDN);
-        getLog().info("[AutoGenerator] YearsValidity: " + yearsValidity);
+        getLog().info("[AutoGenerator] YearsValidity: " + years);
         getLog().info("[AutoGenerator] Directory: " + directory);
         getLog().info("[AutoGenerator] Output: " + outputDirectory.getPath());
 
@@ -219,7 +225,7 @@ public final class AutoGenerator extends AbstractMojo {
                     signature,
                     issuerDN,
                     subjectDN,
-                    yearsValidity,
+                    years,
                     getLog()
             );
 

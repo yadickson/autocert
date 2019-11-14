@@ -33,6 +33,14 @@ import org.apache.maven.plugin.logging.Log;
  */
 public final class WriteFile {
 
+    /**
+     * Write private file.
+     *
+     * @param filePath file path name.
+     * @param key array byte private key.
+     * @param log logger
+     * @throws MojoExecutionException if error.
+     */
     public void writePrivateKey(
             final String filePath,
             final byte[] key,
@@ -45,15 +53,29 @@ public final class WriteFile {
             keySpec = new PKCS8EncodedKeySpec(key);
 
             keyWriter.write("-----BEGIN PRIVATE KEY-----\n\r");
-            keyWriter.write(Base64.getMimeEncoder().encodeToString(keySpec.getEncoded()));
+            keyWriter.write(Base64
+                    .getMimeEncoder()
+                    .encodeToString(keySpec.getEncoded())
+            );
             keyWriter.write("\n\r-----END PRIVATE KEY-----");
 
         } catch (RuntimeException | IOException ex) {
             log.error(ex.getMessage(), ex);
-            throw new MojoExecutionException("Fail private generator key");
+            throw new MojoExecutionException(
+                    "Fail private generator key",
+                    ex
+            );
         }
     }
 
+    /**
+     * Write public file.
+     *
+     * @param filePath file path name.
+     * @param pub array byte public key.
+     * @param log logger
+     * @throws MojoExecutionException if error.
+     */
     public void writePublicKey(
             final String filePath,
             final byte[] pub,
@@ -66,15 +88,29 @@ public final class WriteFile {
             keySpec = new X509EncodedKeySpec(pub);
 
             pubWriter.write("-----BEGIN PUBLIC KEY-----\n\r");
-            pubWriter.write(Base64.getMimeEncoder().encodeToString(keySpec.getEncoded()));
+            pubWriter.write(Base64
+                    .getMimeEncoder()
+                    .encodeToString(keySpec.getEncoded())
+            );
             pubWriter.write("\n\r-----END PUBLIC KEY-----");
 
         } catch (RuntimeException | IOException ex) {
             log.error(ex.getMessage(), ex);
-            throw new MojoExecutionException("Fail public generator key");
+            throw new MojoExecutionException(
+                    "Fail public generator key",
+                    ex
+            );
         }
     }
 
+    /**
+     * Write certificate file.
+     *
+     * @param filePath file path name.
+     * @param cert array byte certificate key.
+     * @param log logger
+     * @throws MojoExecutionException if error.
+     */
     public void writeCertKey(
             final String filePath,
             final byte[] cert,
@@ -87,12 +123,18 @@ public final class WriteFile {
             keySpec = new X509EncodedKeySpec(cert);
 
             pubWriter.write("-----BEGIN CERTIFICATE-----\n\r");
-            pubWriter.write(Base64.getMimeEncoder().encodeToString(keySpec.getEncoded()));
+            pubWriter.write(Base64
+                    .getMimeEncoder()
+                    .encodeToString(keySpec.getEncoded())
+            );
             pubWriter.write("\n\r-----END CERTIFICATE-----");
 
         } catch (RuntimeException | IOException ex) {
             log.error(ex.getMessage(), ex);
-            throw new MojoExecutionException("Fail public generator cert key");
+            throw new MojoExecutionException(
+                    "Fail public generator cert key",
+                    ex
+            );
         }
     }
 }
