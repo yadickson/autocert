@@ -3,3 +3,4 @@ nbproject/
 nb-configuration.xml
 pom.xml.versionsBackup
 .travis.gpg
+jacoco.exec

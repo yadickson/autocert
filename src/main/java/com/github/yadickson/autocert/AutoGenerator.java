@@ -17,7 +17,9 @@
 package com.github.yadickson.autocert;
 
 import com.github.yadickson.autocert.security.Generator;
+import com.github.yadickson.autocert.security.GeneratorImpl;
 import com.github.yadickson.autocert.security.WriteFile;
+import com.github.yadickson.autocert.security.WriteFileImpl;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -136,7 +138,7 @@ public final class AutoGenerator extends AbstractMojo {
     @Parameter(
             property = "autocert.directory",
             required = false,
-            defaultValue = ".")
+            defaultValue = "keys")
     private String directory;
 
     /**
@@ -165,7 +167,7 @@ public final class AutoGenerator extends AbstractMojo {
         getLog().info("[AutoGenerator] KeySize: " + keySize);
         getLog().info("[AutoGenerator] IssuerDN: " + issuerDN);
         getLog().info("[AutoGenerator] SubjectDN: " + subjectDN);
-        getLog().info("[AutoGenerator] YearsValidity: " + years);
+        getLog().info("[AutoGenerator] Years: " + years);
         getLog().info("[AutoGenerator] Directory: " + directory);
         getLog().info("[AutoGenerator] Output: " + outputDirectory.getPath());
 
@@ -200,8 +202,8 @@ public final class AutoGenerator extends AbstractMojo {
             String pubFilePath = basePath + pubFile;
             String certFilePath = basePath + certFile;
 
-            Generator generator = new Generator();
-            WriteFile writeFile = new WriteFile();
+            Generator generator = new GeneratorImpl();
+            WriteFile writeFile = new WriteFileImpl();
 
             final KeyPair pair = generator.createPair(
                     algorithm,

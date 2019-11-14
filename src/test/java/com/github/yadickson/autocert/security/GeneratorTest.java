@@ -35,7 +35,7 @@ import org.junit.BeforeClass;
 public class GeneratorTest {
 
     @InjectMocks
-    private Generator manager;
+    private GeneratorImpl manager;
 
     @Mock
     private Log log;

@@ -107,7 +107,7 @@ Issuer DN
 Subject DN
 ```
 
-### directory (default: .)
+### directory (default: keys)
 
 ```
 Resource directory folder.
