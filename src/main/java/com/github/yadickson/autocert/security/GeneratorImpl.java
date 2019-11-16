@@ -56,13 +56,7 @@ public final class GeneratorImpl implements Generator {
     private static final long YEAR = 365 * DAY;
 
     /**
-     * Create pair certificates.
-     *
-     * @param algorithm algorithm name.
-     * @param keySize key size.
-     * @param log logger.
-     * @return key pair.
-     * @throws MojoExecutionException if error.
+     * {@inheritDoc}
      */
     @Override
     public KeyPair createPair(
@@ -107,12 +101,7 @@ public final class GeneratorImpl implements Generator {
     }
 
     /**
-     * Getter private key.
-     *
-     * @param privateKey private key.
-     * @param log logger.
-     * @return byte array private key.
-     * @throws MojoExecutionException if error.
+     * {@inheritDoc}
      */
     @Override
     public byte[] getPrivateKey(
@@ -123,12 +112,7 @@ public final class GeneratorImpl implements Generator {
     }
 
     /**
-     * Getter public key.
-     *
-     * @param publicKey public key.
-     * @param log logger.
-     * @return byte array public key.
-     * @throws MojoExecutionException if error.
+     * {@inheritDoc}
      */
     @Override
     public byte[] getPublicKey(
@@ -139,12 +123,7 @@ public final class GeneratorImpl implements Generator {
     }
 
     /**
-     * Getter private key.
-     *
-     * @param privateKey private key.
-     * @param log logger.
-     * @return byte array private key.
-     * @throws MojoExecutionException if error.
+     * {@inheritDoc}
      */
     @Override
     public PKCS8EncodedKeySpec getPrivateKeySpec(
@@ -168,12 +147,7 @@ public final class GeneratorImpl implements Generator {
     }
 
     /**
-     * Getter public key.
-     *
-     * @param publicKey public key.
-     * @param log logger.
-     * @return byte array public key.
-     * @throws MojoExecutionException if error.
+     * {@inheritDoc}
      */
     @Override
     public X509EncodedKeySpec getPublicKeySpec(
@@ -197,22 +171,12 @@ public final class GeneratorImpl implements Generator {
     }
 
     /**
-     * Create certificate key.
-     *
-     * @param publicKey public key.
-     * @param privateKey private key.
-     * @param signature signature algorithm.
-     * @param issuerDN issuer DN.
-     * @param subjectDN subject DN.
-     * @param years years validity
-     * @param log logger.
-     * @return certificate key.
-     * @throws MojoExecutionException if error.
+     * {@inheritDoc}
      */
     @Override
     public byte[] getCertKey(
-            final PublicKey publicKey,
             final PrivateKey privateKey,
+            final PublicKey publicKey,
             final String signature,
             final String issuerDN,
             final String subjectDN,
@@ -262,13 +226,7 @@ public final class GeneratorImpl implements Generator {
     }
 
     /**
-     * Create AES secret key.
-     *
-     * @param privateKey private key.
-     * @param publicKey public key.
-     * @param log logger.
-     * @return aes secret key.
-     * @throws MojoExecutionException if error.
+     * {@inheritDoc}
      */
     @Override
     public SecretKey getSecretKey(

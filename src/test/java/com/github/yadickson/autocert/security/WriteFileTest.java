@@ -51,6 +51,7 @@ public class WriteFileTest {
     }
 
     @Test
+    @PrepareForTest({WriteFileImpl.class})
     public void testWritePrivateKey() throws Exception {
 
         byte[] keys = new byte[0];
@@ -74,6 +75,7 @@ public class WriteFileTest {
     }
 
     @Test(expected = MojoExecutionException.class)
+    @PrepareForTest({WriteFileImpl.class})
     public void testWritePrivateKeyError() throws Exception {
 
         byte[] keys = new byte[0];
@@ -91,6 +93,7 @@ public class WriteFileTest {
     }
 
     @Test
+    @PrepareForTest({WriteFileImpl.class})
     public void testWritePublicKey() throws Exception {
 
         byte[] keys = new byte[0];
@@ -114,6 +117,7 @@ public class WriteFileTest {
     }
 
     @Test(expected = MojoExecutionException.class)
+    @PrepareForTest({WriteFileImpl.class})
     public void testWritePublicKeyError() throws Exception {
 
         byte[] keys = new byte[0];
@@ -131,6 +135,7 @@ public class WriteFileTest {
     }
 
     @Test
+    @PrepareForTest({WriteFileImpl.class})
     public void testWriteCertKey() throws Exception {
 
         byte[] keys = new byte[0];
@@ -154,6 +159,7 @@ public class WriteFileTest {
     }
 
     @Test(expected = MojoExecutionException.class)
+    @PrepareForTest({WriteFileImpl.class})
     public void testWriteCertKeyError() throws Exception {
 
         byte[] keys = new byte[0];

@@ -113,8 +113,8 @@ public interface Generator {
      * @throws MojoExecutionException if error.
      */
     byte[] getCertKey(
-            final PublicKey publicKey,
             final PrivateKey privateKey,
+            final PublicKey publicKey,
             final String signature,
             final String issuerDN,
             final String subjectDN,

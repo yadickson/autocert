@@ -89,10 +89,10 @@ RSA [1024, 2048, 4096, ..]
 EC, ECDSA, ECDH [256, 384, 521]
 ```
 
-### years (default: 1)
+### years (default: 10)
 
 ```
->= 1
+>= 10
 ```
 
 ### issuerDN (default: cn=domain)

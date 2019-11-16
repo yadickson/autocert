@@ -46,9 +46,12 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 public final class AutoGenerator extends AbstractMojo {
 
     /**
-     * Maven project link.
+     * The Maven Project.
      */
-    @Parameter(defaultValue = "${project}", readonly = true)
+    @Parameter(
+            defaultValue = "${project}",
+            readonly = true
+    )
     private MavenProject project;
 
     /**
@@ -111,7 +114,7 @@ public final class AutoGenerator extends AbstractMojo {
     @Parameter(
             property = "autocert.years",
             required = false,
-            defaultValue = "1")
+            defaultValue = "10")
     private Integer years;
 
     /**
@@ -151,6 +154,16 @@ public final class AutoGenerator extends AbstractMojo {
     private File outputDirectory;
 
     /**
+     * Generator.
+     */
+    private Generator generator = new GeneratorImpl();
+
+    /**
+     * Write file.
+     */
+    private WriteFile writeFile = new WriteFileImpl();
+
+    /**
      * Maven execute method.
      *
      * @throws MojoExecutionException Launch if the generation process throws an
@@ -171,39 +184,32 @@ public final class AutoGenerator extends AbstractMojo {
         getLog().info("[AutoGenerator] Directory: " + directory);
         getLog().info("[AutoGenerator] Output: " + outputDirectory.getPath());
 
-        if (!outputDirectory.exists() && !outputDirectory.mkdirs()) {
-            throw new MojoExecutionException(
-                    "Fail make " + outputDirectory + " directory."
-            );
-        }
-
-        Resource resource = new Resource();
-        resource.setDirectory(outputDirectory.getPath());
-        project.addResource(resource);
-
-        String basePath = outputDirectory.getPath()
-                + File.separator
-                + directory
-                + File.separator;
-
-        File dir = new File(basePath);
-
-        if (!dir.exists() && !dir.mkdirs()) {
-            throw new MojoExecutionException(
-                    "Fail make " + basePath + " directory."
-            );
-        }
-
         try {
+
+            if (!outputDirectory.exists() && !outputDirectory.mkdirs()) {
+                throw new MojoExecutionException(
+                        "Fail make " + outputDirectory + " directory."
+                );
+            }
+
+            Resource resource = new Resource();
+            resource.setDirectory(outputDirectory.getPath());
+            project.addResource(resource);
+
+            String basePath = outputDirectory.getPath()
+                    + File.separator
+                    + directory
+                    + File.separator;
+
+            File dir = new File(basePath);
+
+            dir.mkdirs();
 
             Security.addProvider(new BouncyCastleProvider());
 
             String keyFilePath = basePath + keyFile;
             String pubFilePath = basePath + pubFile;
             String certFilePath = basePath + certFile;
-
-            Generator generator = new GeneratorImpl();
-            WriteFile writeFile = new WriteFileImpl();
 
             final KeyPair pair = generator.createPair(
                     algorithm,
@@ -222,8 +228,8 @@ public final class AutoGenerator extends AbstractMojo {
             );
 
             byte[] cert = generator.getCertKey(
-                    pair.getPublic(),
                     pair.getPrivate(),
+                    pair.getPublic(),
                     signature,
                     issuerDN,
                     subjectDN,
@@ -235,10 +241,136 @@ public final class AutoGenerator extends AbstractMojo {
             writeFile.writePublicKey(pubFilePath, pub, getLog());
             writeFile.writeCertKey(certFilePath, cert, getLog());
 
-        } catch (RuntimeException ex) {
+        } catch (RuntimeException | MojoExecutionException ex) {
             getLog().error(ex.getMessage(), ex);
             throw new MojoExecutionException("Fail cert generator");
         }
+    }
+
+    /**
+     * Setter maven project only for test.
+     *
+     * @param pproject the project to set
+     */
+    public void setProject(final MavenProject pproject) {
+        this.project = pproject;
+    }
+
+    /**
+     * Setter public file only for test.
+     *
+     * @param ppubFile the pubFile to set
+     */
+    public void setPubFile(final String ppubFile) {
+        this.pubFile = ppubFile;
+    }
+
+    /**
+     * Setter private file only for test.
+     *
+     * @param pkeyFile the keyFile to set
+     */
+    public void setKeyFile(final String pkeyFile) {
+        this.keyFile = pkeyFile;
+    }
+
+    /**
+     * Setter certificate file only for test.
+     *
+     * @param pcertFile the certFile to set
+     */
+    public void setCertFile(final String pcertFile) {
+        this.certFile = pcertFile;
+    }
+
+    /**
+     * Setter algorithm only for test.
+     *
+     * @param palgorithm the algorithm to set
+     */
+    public void setAlgorithm(final String palgorithm) {
+        this.algorithm = palgorithm;
+    }
+
+    /**
+     * Setter key size only for test.
+     *
+     * @param pkeySize the keySize to set
+     */
+    public void setKeySize(final Integer pkeySize) {
+        this.keySize = pkeySize;
+    }
+
+    /**
+     * Setter signature only for test.
+     *
+     * @param psignature the signature to set
+     */
+    public void setSignature(final String psignature) {
+        this.signature = psignature;
+    }
+
+    /**
+     * Setter years only for test.
+     *
+     * @param pyears the years to set
+     */
+    public void setYears(final Integer pyears) {
+        this.years = pyears;
+    }
+
+    /**
+     * Setter issuerDN only for test.
+     *
+     * @param pissuerDN the issuerDN to set
+     */
+    public void setIssuerDN(final String pissuerDN) {
+        this.issuerDN = pissuerDN;
+    }
+
+    /**
+     * Setter subjectDN only for test.
+     *
+     * @param psubjectDN the subjectDN to set
+     */
+    public void setSubjectDN(final String psubjectDN) {
+        this.subjectDN = psubjectDN;
+    }
+
+    /**
+     * Setter directory only for test.
+     *
+     * @param pdirectory the directory to set
+     */
+    public void setDirectory(final String pdirectory) {
+        this.directory = pdirectory;
+    }
+
+    /**
+     * Setter directory only for test.
+     *
+     * @param poutputDirectory the outputDirectory to set
+     */
+    public void setOutputDirectory(final File poutputDirectory) {
+        this.outputDirectory = poutputDirectory;
+    }
+
+    /**
+     * Setter generator only for test.
+     *
+     * @param pgenerator the generator to set
+     */
+    public void setGenerator(final Generator pgenerator) {
+        this.generator = pgenerator;
+    }
+
+    /**
+     * Setter writeFile only for test.
+     *
+     * @param pwriteFile the writeFile to set
+     */
+    public void setWriteFile(final WriteFile pwriteFile) {
+        this.writeFile = pwriteFile;
     }
 
 }

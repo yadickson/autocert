@@ -62,7 +62,7 @@ public class GeneratorTest {
 
         Assert.assertNotNull(manager.getPublicKey(pubKey, log));
         Assert.assertNotNull(manager.getPrivateKey(privKey, log));
-        Assert.assertNotNull(manager.getCertKey(pubKey, privKey, "SHA256withRSA", "cn=domain", "cn=main", 1, log));
+        Assert.assertNotNull(manager.getCertKey(privKey, pubKey, "SHA256withRSA", "cn=domain", "cn=main", 1, log));
     }
 
     @Test(expected = MojoExecutionException.class)
@@ -100,7 +100,7 @@ public class GeneratorTest {
 
         Assert.assertNotNull(manager.getPublicKey(pubKey, log));
         Assert.assertNotNull(manager.getPrivateKey(privKey, log));
-        Assert.assertNotNull(manager.getCertKey(pubKey, privKey, "SHA256withRSA", "cn=domain", "cn=main", 1, log));
+        Assert.assertNotNull(manager.getCertKey(privKey, pubKey, "SHA256withRSA", "cn=domain", "cn=main", 1, log));
     }
 
     @Test(expected = MojoExecutionException.class)
@@ -132,7 +132,7 @@ public class GeneratorTest {
 
         Assert.assertNotNull(manager.getPublicKey(pubKey, log));
         Assert.assertNotNull(manager.getPrivateKey(privKey, log));
-        Assert.assertNotNull(manager.getCertKey(pubKey, privKey, "SHA256withECDSA", "cn=domain", "cn=main", 1, log));
+        Assert.assertNotNull(manager.getCertKey(privKey, pubKey, "SHA256withECDSA", "cn=domain", "cn=main", 1, log));
     }
 
     @Test
@@ -152,7 +152,7 @@ public class GeneratorTest {
 
         Assert.assertNotNull(manager.getPublicKey(pubKey, log));
         Assert.assertNotNull(manager.getPrivateKey(privKey, log));
-        Assert.assertNotNull(manager.getCertKey(pubKey, privKey, "SHA256withECDSA", "cn=domain", "cn=main", 1, log));
+        Assert.assertNotNull(manager.getCertKey(privKey, pubKey, "SHA256withECDSA", "cn=domain", "cn=main", 1, log));
     }
 
     @Test
@@ -172,7 +172,7 @@ public class GeneratorTest {
 
         Assert.assertNotNull(manager.getPublicKey(pubKey, log));
         Assert.assertNotNull(manager.getPrivateKey(privKey, log));
-        Assert.assertNotNull(manager.getCertKey(pubKey, privKey, "SHA256withECDSA", "cn=domain", "cn=main", 1, log));
+        Assert.assertNotNull(manager.getCertKey(privKey, pubKey, "SHA256withECDSA", "cn=domain", "cn=main", 1, log));
     }
 
     @Test(expected = MojoExecutionException.class)
@@ -198,7 +198,7 @@ public class GeneratorTest {
 
         Assert.assertNotNull(manager.getPublicKey(pubKey, log));
         Assert.assertNotNull(manager.getPrivateKey(privKey, log));
-        Assert.assertNotNull(manager.getCertKey(pubKey, privKey, "SHA256withECDSA", "cn=domain", "cn=main", 1, log));
+        Assert.assertNotNull(manager.getCertKey(privKey, pubKey, "SHA256withECDSA", "cn=domain", "cn=main", 1, log));
     }
 
     @Test
@@ -218,7 +218,7 @@ public class GeneratorTest {
 
         Assert.assertNotNull(manager.getPublicKey(pubKey, log));
         Assert.assertNotNull(manager.getPrivateKey(privKey, log));
-        Assert.assertNotNull(manager.getCertKey(pubKey, privKey, "SHA256withECDSA", "cn=domain", "cn=main", 1, log));
+        Assert.assertNotNull(manager.getCertKey(privKey, pubKey, "SHA256withECDSA", "cn=domain", "cn=main", 1, log));
     }
 
     @Test

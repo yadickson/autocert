@@ -34,12 +34,7 @@ import org.apache.maven.plugin.logging.Log;
 public final class WriteFileImpl implements WriteFile {
 
     /**
-     * Write private file.
-     *
-     * @param filePath file path name.
-     * @param key array byte private key.
-     * @param log logger
-     * @throws MojoExecutionException if error.
+     * {@inheritDoc}
      */
     @Override
     public void writePrivateKey(
@@ -70,12 +65,7 @@ public final class WriteFileImpl implements WriteFile {
     }
 
     /**
-     * Write public file.
-     *
-     * @param filePath file path name.
-     * @param pub array byte public key.
-     * @param log logger
-     * @throws MojoExecutionException if error.
+     * {@inheritDoc}
      */
     @Override
     public void writePublicKey(
@@ -106,12 +96,7 @@ public final class WriteFileImpl implements WriteFile {
     }
 
     /**
-     * Write certificate file.
-     *
-     * @param filePath file path name.
-     * @param cert array byte certificate key.
-     * @param log logger
-     * @throws MojoExecutionException if error.
+     * {@inheritDoc}
      */
     @Override
     public void writeCertKey(
