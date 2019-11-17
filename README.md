@@ -91,8 +91,10 @@ EC, ECDSA, ECDH [256, 384, 521]
 
 ### years (default: 10)
 
+Years validation time
+
 ```
->= 10
+>= 1
 ```
 
 ### issuerDN (default: cn=domain)
@@ -120,8 +122,9 @@ Resource output directory folder.
 ```
 
 ## Command line support
-
-> mvn clean package -Dautocert.pubFile=... -Dautocert.keyFile=... -Dautocert.certFile=... -Dautocert.algorithm=... -Dautocert.signature=... -Dautocert.keySize=... -Dautocert.years=... -Dautocert.issuerDN=... -Dautocert.subjectDN=... -Dautocert.directory=...
+```
+$ mvn clean package -Dautocert.pubFile=... -Dautocert.keyFile=... -Dautocert.certFile=... -Dautocert.algorithm=... -Dautocert.signature=... -Dautocert.keySize=... -Dautocert.years=... -Dautocert.issuerDN=... -Dautocert.subjectDN=... -Dautocert.directory=...
+```
 
 License
 -------
