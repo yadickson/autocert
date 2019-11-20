@@ -5,27 +5,32 @@
  */
 package com.github.yadickson.autocert.security;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.Signature;
+import java.util.Map;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.junit.BeforeClass;
 
 /**
  *
@@ -43,6 +48,7 @@ public class GeneratorTest {
     @BeforeClass
     public static void setUp() {
         Security.addProvider(new BouncyCastleProvider());
+        cipher();
     }
 
     @Test
@@ -452,5 +458,36 @@ public class GeneratorTest {
         Assert.assertEquals("RSA", pubKey.getAlgorithm());
 
         manager.getSecretKey(privKey, pubKey, log);
+    }
+
+    private static void cipher() {
+        try {
+            if (Cipher.getMaxAllowedKeyLength("AES") < 256) {
+                Class c = Class.forName("javax.crypto.CryptoAllPermissionCollection");
+                Constructor con = c.getDeclaredConstructor();
+                con.setAccessible(true);
+                Object allPermissionCollection = con.newInstance();
+                Field f = c.getDeclaredField("all_allowed");
+                f.setAccessible(true);
+                f.setBoolean(allPermissionCollection, true);
+
+                c = Class.forName("javax.crypto.CryptoPermissions");
+                con = c.getDeclaredConstructor();
+                con.setAccessible(true);
+                Object allPermissions = con.newInstance();
+                f = c.getDeclaredField("perms");
+                f.setAccessible(true);
+                ((Map) f.get(allPermissions)).put("*", allPermissionCollection);
+
+                c = Class.forName("javax.crypto.JceSecurityManager");
+                f = c.getDeclaredField("defaultPolicy");
+                f.setAccessible(true);
+                Field mf = Field.class.getDeclaredField("modifiers");
+                mf.setAccessible(true);
+                mf.setInt(f, f.getModifiers() & ~Modifier.FINAL);
+                f.set(null, allPermissions);
+            }
+        } catch (Exception e) {
+        }
     }
 }

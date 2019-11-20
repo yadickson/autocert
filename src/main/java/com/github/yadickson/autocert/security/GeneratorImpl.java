@@ -238,13 +238,11 @@ public final class GeneratorImpl implements Generator {
         try {
 
             KeyAgreement keyAgreement;
-            String algorithm;
 
             switch (privateKey.getAlgorithm()) {
                 case "EC":
                 case "ECDSA":
                 case "ECDH":
-                    algorithm = "ECDH";
                     break;
                 default:
                     throw new MojoExecutionException(
@@ -254,11 +252,15 @@ public final class GeneratorImpl implements Generator {
             }
 
             keyAgreement = KeyAgreement.getInstance(
-                    algorithm,
+                    "ECDH",
                     BouncyCastleProvider.PROVIDER_NAME
             );
 
-            keyAgreement.init(privateKey, new SecureRandom());
+            keyAgreement.init(
+                    privateKey,
+                    new SecureRandom()
+            );
+
             keyAgreement.doPhase(publicKey, true);
 
             return keyAgreement.generateSecret("AES");
