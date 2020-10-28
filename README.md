@@ -11,8 +11,8 @@ Maven plugin to generate certificate resources in compilation time.
 
 ```xml
 <properties>
-    <maven.compiler.source>1.6</maven.compiler.source>
-    <maven.compiler.target>1.6</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 </properties>
 ```
@@ -29,21 +29,21 @@ Maven plugin to generate certificate resources in compilation time.
             <goals>
                 <goal>generator</goal>
             </goals>
-            <configuration>
-                <pubFile>...</pubFile>
-                <keyFile>...</keyFile>
-                <certFile>...</certFile>
-                <algorithm>...</algorithm>
-                <signature>...</signature>
-                <keySize>...</keySize>
-                <years>...</years>
-                <issuerDN>...</issuerDN>
-                <subjectDN>...</subjectDN>
-                <directory>...</directory>
-                <outputDirectory>...</outputDirectory>
-            </configuration>
         </execution>
     </executions>
+    <configuration>
+        <pubFile>...</pubFile>
+        <keyFile>...</keyFile>
+        <certFile>...</certFile>
+        <algorithm>...</algorithm>
+        <signature>...</signature>
+        <keySize>...</keySize>
+        <years>...</years>
+        <issuer>...</issuer>
+        <subject>...</subject>
+        <directoryName>...</directoryName>
+        <outputDirectory>...</outputDirectory>
+    </configuration>
 </plugin>
 ```
 
@@ -97,22 +97,22 @@ Years validation time
 >= 1
 ```
 
-### issuerDN (default: cn=domain)
+### issuer (default: domain)
 
 ```
 Issuer DN
 ```
 
-### subjectDN (default: cn=main)
+### subject (default: main)
 
 ```
 Subject DN
 ```
 
-### directory (default: keys)
+### directoryName (default: keys)
 
 ```
-Resource directory folder.
+Directory name inside of outputDirectory.
 ```
 
 ### outputDirectory (default: ${project.build.directory}/generated-resources)
@@ -123,7 +123,7 @@ Resource output directory folder.
 
 ## Command line support
 ```
-$ mvn clean package -Dautocert.pubFile=... -Dautocert.keyFile=... -Dautocert.certFile=... -Dautocert.algorithm=... -Dautocert.signature=... -Dautocert.keySize=... -Dautocert.years=... -Dautocert.issuerDN=... -Dautocert.subjectDN=... -Dautocert.directory=...
+$ mvn clean package -Dautocert.pubFile=... -Dautocert.keyFile=... -Dautocert.certFile=... -Dautocert.algorithm=... -Dautocert.signature=... -Dautocert.keySize=... -Dautocert.years=... -Dautocert.issuer=... -Dautocert.subject=... -Dautocert.directoryName=... -Dautocert.outputDirectory=...
 ```
 
 License
