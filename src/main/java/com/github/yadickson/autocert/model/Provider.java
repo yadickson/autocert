@@ -14,14 +14,13 @@ public class Provider {
     private final java.security.Provider provider;
     private final String name;
 
+    public Provider(final Provider securityProvider) {
+        this(securityProvider.getProvider(), securityProvider.getName());
+    }
+
     public Provider(final java.security.Provider provider, final String name) {
         this.provider = provider;
         this.name = name;
-    }
-
-    public Provider(final Provider securityProvider) {
-        this.provider = securityProvider.getProvider();
-        this.name = securityProvider.getName();
     }
 
     public java.security.Provider getProvider() {
