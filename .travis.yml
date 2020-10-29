@@ -17,16 +17,6 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-- provider: releases
-  api_key:
-    secure: ${GITHUB_TOKEN}
-  file_glob: true
-  file:
-  - target/*.jar
-  - pom.xml
-  skip_cleanup: true
-  on:
-    tags: true
 env:
   global:
   - secure: aIR0MQjNiEY8Rf2Rpmq/KfJSJX6unvIc8hzL8oRV5xdX+fnABoajLuKKj9G+H7llGO0/k4+8UlTYSsEdpUzTh6f+kDnsVVX578Klg6daG2F5yD2TBL+3MXt9R+eqw5uo+BKRNfdsQEPpsB/0/CNp6zDJ6hnwRvWypbOt5Vkm+ZX2JuGL9utnwFi62q68psGpkitgs1mmCujKYh3uIJeGCkI66x+xdPAOzcaHJWaGkz2keoOxTzysa2cNH6d75+rkup2C8ao1z0W7dd/GiRN/qAF02Q//aJwEnIAmSfRm+sWaKCySMrrjS/+2T08uQzGZgqvhwic9Pv04Yz6PSmDqMrQUOcW9BvU6gyiKhdGtvooxAkpH/RXOARGsrEpUn4qiwWDirtm/iDGgB0tAIqj8rlf33RELtW0WSMFjOT3QRHVU39+SwmPaxtHtKpJuKpnV5xaqPejXLuWKuy4fiuUnvWJbRR1YqdWkIMY2T4krpWeFdLE6Qic4JF9Aynjd6up72O13pZINo2sTr04Dw5U9eSr/p0WOQqswKnR+W3BmoGDBS0wbRWwq2dU92Jh5070PMpCVKZOIRd8o1WmNzYZjIAXn7o4ch9U5I4qUWnneMExjZ8g+0I+wYaZTxdDoFRYdUeq7in6ln9rSOvLnnHqUyU4Z0ON/K9LSn4IO7vbKC6w=
