@@ -30,7 +30,7 @@ import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
 import com.github.yadickson.autocert.Parameters;
-import com.github.yadickson.autocert.provider.Provider;
+import com.github.yadickson.autocert.key.provider.Provider;
 
 /**
  *

@@ -19,7 +19,7 @@ import com.github.yadickson.autocert.key.algorithm.Algorithm;
 import com.github.yadickson.autocert.key.algorithm.AlgorithmMapper;
 import com.github.yadickson.autocert.key.keypair.initializer.KeyPairInitialize;
 import com.github.yadickson.autocert.key.keypair.initializer.KeyPairInitializeFactory;
-import com.github.yadickson.autocert.provider.Provider;
+import com.github.yadickson.autocert.key.provider.Provider;
 
 /**
  *

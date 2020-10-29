@@ -27,8 +27,7 @@ import com.github.yadickson.autocert.key.keypair.KeyPairGenerator;
 import com.github.yadickson.autocert.key.keypair.initializer.KeyPairInitializeFactory;
 import com.github.yadickson.autocert.key.secrectkey.SecretKeyGenerator;
 import com.github.yadickson.autocert.key.secrectkey.SecretKeyGeneratorException;
-import com.github.yadickson.autocert.provider.ProviderConfiguration;
-import com.github.yadickson.autocert.provider.ProviderDecorator;
+import com.github.yadickson.autocert.key.provider.ProviderDecorator;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SecrectKeyGeneratorTest {
@@ -48,8 +47,7 @@ public class SecrectKeyGeneratorTest {
     public void setUp() {
         algorithmMapper = new AlgorithmMapper();
         generator = new SecretKeyGenerator(algorithmMapper);
-
-        provider = new ProviderDecorator(new ProviderConfiguration());
+        provider = new ProviderDecorator();
         keyPairGenerator = new KeyPairGenerator(new AlgorithmMapper(), new KeyPairInitializeFactory());
     }
 

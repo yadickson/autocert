@@ -23,9 +23,8 @@ import com.github.yadickson.autocert.key.certificate.CertificateGeneratorExcepti
 import com.github.yadickson.autocert.key.keypair.KeyPairGenerator;
 import com.github.yadickson.autocert.key.keypair.KeyPairGeneratorException;
 import com.github.yadickson.autocert.key.privatekey.PrivateKeyGenerator;
+import com.github.yadickson.autocert.key.provider.Provider;
 import com.github.yadickson.autocert.key.publickey.PublicKeyGenerator;
-import com.github.yadickson.autocert.provider.Provider;
-import com.github.yadickson.autocert.provider.ProviderConfiguration;
 import com.github.yadickson.autocert.writer.certificate.CertificateWriter;
 import com.github.yadickson.autocert.writer.directory.DirectoryBuilder;
 import com.github.yadickson.autocert.writer.privatekey.PrivateKeyWriter;
@@ -107,7 +106,6 @@ public class GeneratorPluginTest {
     @Before
     public void setUp() {
         generatorPlugin = new GeneratorPlugin(
-                new ProviderConfiguration(),
                 keyPairGeneratorMock,
                 privateKeyGeneratorMock,
                 publicKeyGeneratorMock,

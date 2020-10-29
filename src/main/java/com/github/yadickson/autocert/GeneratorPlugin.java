@@ -24,10 +24,9 @@ import org.apache.maven.project.MavenProject;
 import com.github.yadickson.autocert.key.certificate.CertificateGenerator;
 import com.github.yadickson.autocert.key.keypair.KeyPairGenerator;
 import com.github.yadickson.autocert.key.privatekey.PrivateKeyGenerator;
+import com.github.yadickson.autocert.key.provider.Provider;
+import com.github.yadickson.autocert.key.provider.ProviderDecorator;
 import com.github.yadickson.autocert.key.publickey.PublicKeyGenerator;
-import com.github.yadickson.autocert.provider.Provider;
-import com.github.yadickson.autocert.provider.ProviderConfiguration;
-import com.github.yadickson.autocert.provider.ProviderDecorator;
 import com.github.yadickson.autocert.writer.certificate.CertificateWriter;
 import com.github.yadickson.autocert.writer.directory.DirectoryBuilder;
 import com.github.yadickson.autocert.writer.privatekey.PrivateKeyWriter;
@@ -194,11 +193,6 @@ public final class GeneratorPlugin extends AbstractMojo {
     private Certificate certificate;
 
     /**
-     * Security provider configuration.
-     */
-    private final ProviderConfiguration providerConfiguration;
-
-    /**
      * Directory builder.
      */
     private final DirectoryBuilder directoryBuilder;
@@ -245,7 +239,6 @@ public final class GeneratorPlugin extends AbstractMojo {
 
     @Inject
     public GeneratorPlugin(
-            final ProviderConfiguration providerConfiguration,
             final KeyPairGenerator keyPairGenerator,
             final PrivateKeyGenerator privateKeyGenerator,
             final PublicKeyGenerator publicKeyGenerator,
@@ -256,7 +249,6 @@ public final class GeneratorPlugin extends AbstractMojo {
             final PublicKeyWriter publicKeyWriter,
             final CertificateWriter certificateWriter
     ) {
-        this.providerConfiguration = providerConfiguration;
         this.keyPairGenerator = keyPairGenerator;
         this.privateKeyGenerator = privateKeyGenerator;
         this.publicKeyGenerator = publicKeyGenerator;
@@ -277,7 +269,7 @@ public final class GeneratorPlugin extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException {
 
-        try (ProviderDecorator provider = new ProviderDecorator(providerConfiguration)) {
+        try (ProviderDecorator provider = new ProviderDecorator()) {
 
             makeParameters();
             printParameters();

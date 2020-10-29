@@ -17,8 +17,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.github.yadickson.autocert.Parameters;
 import com.github.yadickson.autocert.key.algorithm.AlgorithmMapper;
 import com.github.yadickson.autocert.key.keypair.initializer.KeyPairInitializeFactory;
-import com.github.yadickson.autocert.provider.ProviderConfiguration;
-import com.github.yadickson.autocert.provider.ProviderDecorator;
+import com.github.yadickson.autocert.key.provider.ProviderDecorator;
 
 @RunWith(MockitoJUnitRunner.class)
 public class KeyPairGeneratorTest {
@@ -33,7 +32,7 @@ public class KeyPairGeneratorTest {
     @Before
     public void setUp() {
         generator = new KeyPairGenerator(new AlgorithmMapper(), new KeyPairInitializeFactory());
-        provider = new ProviderDecorator(new ProviderConfiguration());
+        provider = new ProviderDecorator();
     }
 
     @After
