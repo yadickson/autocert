@@ -1,4 +1,4 @@
-package com.github.yadickson.autocert.initializer.ec;
+package com.github.yadickson.autocert.key.keypair.initializer.ec;
 
 import java.security.KeyPairGenerator;
 import java.security.spec.AlgorithmParameterSpec;

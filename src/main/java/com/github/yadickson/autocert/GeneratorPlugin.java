@@ -21,20 +21,15 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import com.github.yadickson.autocert.algorithm.AlgorithmMapper;
-import com.github.yadickson.autocert.directory.DirectoryBuilder;
-import com.github.yadickson.autocert.initializer.KeyPairInitialize;
-import com.github.yadickson.autocert.initializer.KeyPairInitializeFactory;
 import com.github.yadickson.autocert.key.certificate.CertificateGenerator;
 import com.github.yadickson.autocert.key.keypair.KeyPairGenerator;
 import com.github.yadickson.autocert.key.privatekey.PrivateKeyGenerator;
 import com.github.yadickson.autocert.key.publickey.PublicKeyGenerator;
-import com.github.yadickson.autocert.model.Algorithm;
-import com.github.yadickson.autocert.model.Parameters;
-import com.github.yadickson.autocert.model.Provider;
+import com.github.yadickson.autocert.provider.Provider;
 import com.github.yadickson.autocert.provider.ProviderConfiguration;
 import com.github.yadickson.autocert.provider.ProviderDecorator;
 import com.github.yadickson.autocert.writer.certificate.CertificateWriter;
+import com.github.yadickson.autocert.writer.directory.DirectoryBuilder;
 import com.github.yadickson.autocert.writer.privatekey.PrivateKeyWriter;
 import com.github.yadickson.autocert.writer.publickey.PublicKeyWriter;
 
@@ -179,16 +174,6 @@ public final class GeneratorPlugin extends AbstractMojo {
     private String customDirectory;
 
     /**
-     * Algorithm.
-     */
-    private Algorithm algorithm;
-
-    /**
-     * Algorithm initialize.
-     */
-    private KeyPairInitialize initializer;
-
-    /**
      * Key pair generate.
      */
     private KeyPair keyPair;
@@ -222,16 +207,6 @@ public final class GeneratorPlugin extends AbstractMojo {
      * Maven custom resource.
      */
     private final CustomResource customResource;
-
-    /**
-     * Algorithm mapper.
-     */
-    private final AlgorithmMapper algorithmMapper;
-
-    /**
-     * Initialize factory.
-     */
-    private final KeyPairInitializeFactory initializerFactory;
 
     /**
      * KeyPair generator.
@@ -271,27 +246,23 @@ public final class GeneratorPlugin extends AbstractMojo {
     @Inject
     public GeneratorPlugin(
             final ProviderConfiguration providerConfiguration,
-            final DirectoryBuilder directoryBuilder,
-            final CustomResource customResource,
-            final AlgorithmMapper algorithmMapper,
-            final KeyPairInitializeFactory initializerFactory,
             final KeyPairGenerator keyPairGenerator,
             final PrivateKeyGenerator privateKeyGenerator,
             final PublicKeyGenerator publicKeyGenerator,
             final CertificateGenerator certificateGenerator,
+            final DirectoryBuilder directoryBuilder,
+            final CustomResource customResource,
             final PrivateKeyWriter privateKeyWriter,
             final PublicKeyWriter publicKeyWriter,
             final CertificateWriter certificateWriter
     ) {
         this.providerConfiguration = providerConfiguration;
-        this.directoryBuilder = directoryBuilder;
-        this.customResource = customResource;
-        this.algorithmMapper = algorithmMapper;
-        this.initializerFactory = initializerFactory;
         this.keyPairGenerator = keyPairGenerator;
         this.privateKeyGenerator = privateKeyGenerator;
         this.publicKeyGenerator = publicKeyGenerator;
         this.certificateGenerator = certificateGenerator;
+        this.directoryBuilder = directoryBuilder;
+        this.customResource = customResource;
         this.privateKeyWriter = privateKeyWriter;
         this.publicKeyWriter = publicKeyWriter;
         this.certificateWriter = certificateWriter;
@@ -310,9 +281,6 @@ public final class GeneratorPlugin extends AbstractMojo {
 
             makeParameters();
             printParameters();
-
-            findAlgorithm();
-            findAlgorithmInitializer();
 
             makeKeyPair(provider);
             makePrivateKey();
@@ -350,16 +318,8 @@ public final class GeneratorPlugin extends AbstractMojo {
         getLog().info("[Generator] OutputDirectory: " + parameters.getOutputDirectory().getPath());
     }
 
-    private void findAlgorithm() {
-        algorithm = algorithmMapper.apply(parameters.getAlgorithm());
-    }
-
-    private void findAlgorithmInitializer() {
-        initializer = initializerFactory.apply(algorithm);
-    }
-
     private void makeKeyPair(Provider provider) {
-        keyPair = keyPairGenerator.execute(provider, initializer, algorithm, parameters.getKeySize());
+        keyPair = keyPairGenerator.execute(provider, parameters);
     }
 
     private void makePrivateKey() {

@@ -3,11 +3,11 @@
  *
  * See <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
-package com.github.yadickson.autocert.initializer.rsa;
+package com.github.yadickson.autocert.key.keypair.initializer.rsa;
 
 import java.security.KeyPairGenerator;
 
-import com.github.yadickson.autocert.initializer.KeyPairInitialize;
+import com.github.yadickson.autocert.key.keypair.initializer.KeyPairInitialize;
 
 /**
  *

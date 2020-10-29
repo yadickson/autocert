@@ -29,8 +29,8 @@ import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
-import com.github.yadickson.autocert.model.Parameters;
-import com.github.yadickson.autocert.model.Provider;
+import com.github.yadickson.autocert.Parameters;
+import com.github.yadickson.autocert.provider.Provider;
 
 /**
  *

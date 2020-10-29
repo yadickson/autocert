@@ -1,4 +1,4 @@
-package com.github.yadickson.autocert.initializer;
+package com.github.yadickson.autocert.key.keypair.initializer;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -6,9 +6,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.yadickson.autocert.initializer.ec.KeyPairEcInitialize;
-import com.github.yadickson.autocert.initializer.rsa.KeyPairRsaInitialize;
-import com.github.yadickson.autocert.model.Algorithm;
+import com.github.yadickson.autocert.key.algorithm.Algorithm;
+import com.github.yadickson.autocert.key.keypair.initializer.ec.KeyPairEcInitialize;
+import com.github.yadickson.autocert.key.keypair.initializer.rsa.KeyPairRsaInitialize;
 
 @RunWith(MockitoJUnitRunner.class)
 public class KeyPairInitializeFactoryTest {

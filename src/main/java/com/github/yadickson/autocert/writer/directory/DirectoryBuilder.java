@@ -3,7 +3,7 @@
  *
  * See <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
-package com.github.yadickson.autocert.directory;
+package com.github.yadickson.autocert.writer.directory;
 
 import java.io.File;
 import javax.inject.Named;

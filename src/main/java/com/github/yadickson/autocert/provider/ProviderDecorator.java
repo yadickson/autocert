@@ -5,7 +5,6 @@
  */
 package com.github.yadickson.autocert.provider;
 
-import com.github.yadickson.autocert.model.Provider;
 import java.io.Closeable;
 import java.io.IOException;
 import java.security.Security;

@@ -3,7 +3,7 @@
  *
  * See <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
-package com.github.yadickson.autocert.algorithm;
+package com.github.yadickson.autocert.key.algorithm;
 
 /**
  *

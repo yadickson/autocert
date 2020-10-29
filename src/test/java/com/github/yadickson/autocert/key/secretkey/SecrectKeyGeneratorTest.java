@@ -17,16 +17,16 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.yadickson.autocert.algorithm.AlgorithmMapper;
-import com.github.yadickson.autocert.initializer.KeyPairInitialize;
-import com.github.yadickson.autocert.initializer.ec.KeyPairEcInitialize;
-import com.github.yadickson.autocert.initializer.rsa.KeyPairRsaInitialize;
+import com.github.yadickson.autocert.Parameters;
+import com.github.yadickson.autocert.key.algorithm.AlgorithmMapper;
 import com.github.yadickson.autocert.key.keypair.KeyPairGenerator;
+import com.github.yadickson.autocert.key.keypair.initializer.KeyPairInitializeFactory;
 import com.github.yadickson.autocert.key.secrectkey.SecretKeyGenerator;
 import com.github.yadickson.autocert.key.secrectkey.SecretKeyGeneratorException;
-import com.github.yadickson.autocert.model.Algorithm;
 import com.github.yadickson.autocert.provider.ProviderConfiguration;
 import com.github.yadickson.autocert.provider.ProviderDecorator;
 
@@ -39,11 +39,10 @@ public class SecrectKeyGeneratorTest {
 
     private ProviderDecorator provider;
 
-    private KeyPairInitialize rsaInitializer;
-
-    private KeyPairInitialize ecInitializer;
-
     private KeyPairGenerator keyPairGenerator;
+
+    @Mock
+    private Parameters parametersPluginMock;
 
     @Before
     public void setUp() {
@@ -51,9 +50,7 @@ public class SecrectKeyGeneratorTest {
         generator = new SecretKeyGenerator(algorithmMapper);
 
         provider = new ProviderDecorator(new ProviderConfiguration());
-        rsaInitializer = new KeyPairRsaInitialize();
-        ecInitializer = new KeyPairEcInitialize();
-        keyPairGenerator = new KeyPairGenerator();
+        keyPairGenerator = new KeyPairGenerator(new AlgorithmMapper(), new KeyPairInitializeFactory());
     }
 
     @After
@@ -64,7 +61,10 @@ public class SecrectKeyGeneratorTest {
     @Test
     public void testSign_And_Verify_RSA_4096() throws Exception {
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, rsaInitializer, Algorithm.RSA, 4096);
+        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
+        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(4096);
+
+        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
 
         Assert.assertNotNull(keyPair);
 
@@ -100,7 +100,10 @@ public class SecrectKeyGeneratorTest {
     @Test
     public void testSign_And_Verify_EC_256() throws Exception {
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, ecInitializer, Algorithm.EC, 256);
+        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
+        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
+
+        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
 
         Assert.assertNotNull(keyPair);
 
@@ -136,7 +139,10 @@ public class SecrectKeyGeneratorTest {
     @Test
     public void testSign_And_Verify_ECDH_256() throws Exception {
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, ecInitializer, Algorithm.ECDH, 256);
+        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDH");
+        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
+
+        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
 
         Assert.assertNotNull(keyPair);
 
@@ -172,7 +178,10 @@ public class SecrectKeyGeneratorTest {
     @Test
     public void testSign_And_Verify_ECDSA_256() throws Exception {
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, ecInitializer, Algorithm.ECDSA, 256);
+        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDSA");
+        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
+
+        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
 
         Assert.assertNotNull(keyPair);
 
@@ -208,7 +217,10 @@ public class SecrectKeyGeneratorTest {
     @Test
     public void testCrypt_And_Decrypt_EC_256() throws Exception {
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, ecInitializer, Algorithm.EC, 256);
+        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
+        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
+
+        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
 
         Assert.assertNotNull(keyPair);
 
@@ -264,7 +276,10 @@ public class SecrectKeyGeneratorTest {
     @Test
     public void testCrypt_And_Decrypt_ECDH_256() throws Exception {
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, ecInitializer, Algorithm.ECDH, 256);
+        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDH");
+        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
+
+        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
 
         Assert.assertNotNull(keyPair);
 
@@ -317,7 +332,11 @@ public class SecrectKeyGeneratorTest {
     @Test(expected = SecretKeyGeneratorException.class)
     public void testCrypt_And_Decrypt_RSA_2048() throws Exception {
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, rsaInitializer, Algorithm.RSA, 2048);
+        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
+        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(2048);
+
+        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+
         Assert.assertNotNull(keyPair);
 
         PrivateKey privKey = keyPair.getPrivate();

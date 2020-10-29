@@ -15,12 +15,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.yadickson.autocert.model.Parameters;
-import com.github.yadickson.autocert.initializer.KeyPairInitialize;
-import com.github.yadickson.autocert.initializer.ec.KeyPairEcInitialize;
-import com.github.yadickson.autocert.initializer.rsa.KeyPairRsaInitialize;
+import com.github.yadickson.autocert.Parameters;
+import com.github.yadickson.autocert.key.algorithm.AlgorithmMapper;
 import com.github.yadickson.autocert.key.keypair.KeyPairGenerator;
-import com.github.yadickson.autocert.model.Algorithm;
+import com.github.yadickson.autocert.key.keypair.initializer.KeyPairInitializeFactory;
 import com.github.yadickson.autocert.provider.ProviderConfiguration;
 import com.github.yadickson.autocert.provider.ProviderDecorator;
 
@@ -31,10 +29,6 @@ public class CertificateGeneratorTest {
 
     private ProviderDecorator provider;
 
-    private KeyPairInitialize rsaInitializer;
-
-    private KeyPairInitialize ecInitializer;
-
     private KeyPairGenerator keyPairGenerator;
 
     @Mock
@@ -44,9 +38,7 @@ public class CertificateGeneratorTest {
     public void setUp() {
         generator = new CertificateGenerator();
         provider = new ProviderDecorator(new ProviderConfiguration());
-        rsaInitializer = new KeyPairRsaInitialize();
-        ecInitializer = new KeyPairEcInitialize();
-        keyPairGenerator = new KeyPairGenerator();
+        keyPairGenerator = new KeyPairGenerator(new AlgorithmMapper(), new KeyPairInitializeFactory());
     }
 
     @After
@@ -57,7 +49,10 @@ public class CertificateGeneratorTest {
     @Test
     public void it_should_return_rsa_certificate() throws CertificateEncodingException {
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, rsaInitializer, Algorithm.RSA, 1024);
+        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
+        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(1024);
+
+        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
 
         String signature = "SHA256withRSA";
         String issuer = "domain";
@@ -86,7 +81,10 @@ public class CertificateGeneratorTest {
     @Test
     public void it_should_return_ec_certificate() throws CertificateEncodingException {
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, ecInitializer, Algorithm.EC, 256);
+        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
+        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
+
+        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
 
         String signature = "SHA256withECDSA";
         String issuer = "domain";
@@ -115,7 +113,10 @@ public class CertificateGeneratorTest {
     @Test(expected = CertificateGeneratorException.class)
     public void it_should_throw_error_when_signature_is_wrong() {
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, ecInitializer, Algorithm.EC, 256);
+        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
+        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
+
+        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
 
         String signature = "SHA256withRSA";
         String issuer = "domain";

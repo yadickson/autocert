@@ -5,7 +5,6 @@
  */
 package com.github.yadickson.autocert.provider;
 
-import com.github.yadickson.autocert.model.Provider;
 import java.util.function.Supplier;
 import javax.inject.Named;
 import javax.inject.Singleton;

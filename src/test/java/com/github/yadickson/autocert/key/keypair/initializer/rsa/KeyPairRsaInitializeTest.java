@@ -1,4 +1,4 @@
-package com.github.yadickson.autocert.initializer.rsa;
+package com.github.yadickson.autocert.key.keypair.initializer.rsa;
 
 import java.security.KeyPairGenerator;
 import org.junit.Before;

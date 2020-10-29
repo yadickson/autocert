@@ -10,12 +10,16 @@ import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import com.github.yadickson.autocert.model.Algorithm;
-import com.github.yadickson.autocert.model.Provider;
-import com.github.yadickson.autocert.initializer.KeyPairInitialize;
+import com.github.yadickson.autocert.Parameters;
+import com.github.yadickson.autocert.key.algorithm.Algorithm;
+import com.github.yadickson.autocert.key.algorithm.AlgorithmMapper;
+import com.github.yadickson.autocert.key.keypair.initializer.KeyPairInitialize;
+import com.github.yadickson.autocert.key.keypair.initializer.KeyPairInitializeFactory;
+import com.github.yadickson.autocert.provider.Provider;
 
 /**
  *
@@ -25,23 +29,38 @@ import com.github.yadickson.autocert.initializer.KeyPairInitialize;
 @Singleton
 public class KeyPairGenerator {
 
+    private final AlgorithmMapper algorithmMapper;
+    private final KeyPairInitializeFactory initializeFactory;
+
+    @Inject
+    public KeyPairGenerator(
+            final AlgorithmMapper algorithmMapper,
+            final KeyPairInitializeFactory initializeFactory
+    ) {
+        this.algorithmMapper = algorithmMapper;
+        this.initializeFactory = initializeFactory;
+    }
+
     public KeyPair execute(
             final Provider provider,
-            final KeyPairInitialize initializer,
-            final Algorithm algorithm,
-            final Integer keySize
+            final Parameters parameters
     ) {
 
         try {
 
+            final Algorithm algorithm;
             final java.security.KeyPairGenerator keyPairGenerator;
+            final KeyPairInitialize initializer;
+
+            algorithm = algorithmMapper.apply(parameters.getAlgorithm());
 
             keyPairGenerator = java.security.KeyPairGenerator.getInstance(
                     algorithm.getMessage(),
                     provider.getName()
             );
 
-            initializer.execute(keyPairGenerator, keySize);
+            initializer = initializeFactory.apply(algorithm);
+            initializer.execute(keyPairGenerator, parameters.getKeySize());
 
             return keyPairGenerator.generateKeyPair();
 

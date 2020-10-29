@@ -3,16 +3,16 @@
  *
  * See <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
-package com.github.yadickson.autocert.initializer;
+package com.github.yadickson.autocert.key.keypair.initializer;
 
 import java.util.function.Function;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import com.github.yadickson.autocert.initializer.ec.KeyPairEcInitialize;
-import com.github.yadickson.autocert.initializer.rsa.KeyPairRsaInitialize;
-import com.github.yadickson.autocert.model.Algorithm;
+import com.github.yadickson.autocert.key.keypair.initializer.ec.KeyPairEcInitialize;
+import com.github.yadickson.autocert.key.keypair.initializer.rsa.KeyPairRsaInitialize;
+import com.github.yadickson.autocert.key.algorithm.Algorithm;
 
 /**
  *

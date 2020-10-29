@@ -5,7 +5,6 @@
  */
 package com.github.yadickson.autocert.key.secrectkey;
 
-import com.github.yadickson.autocert.algorithm.AlgorithmMapper;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
@@ -15,12 +14,13 @@ import java.security.PublicKey;
 
 import javax.crypto.KeyAgreement;
 import javax.crypto.SecretKey;
-
-import com.github.yadickson.autocert.model.Algorithm;
-import com.github.yadickson.autocert.model.Provider;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+
+import com.github.yadickson.autocert.key.algorithm.Algorithm;
+import com.github.yadickson.autocert.key.algorithm.AlgorithmMapper;
+import com.github.yadickson.autocert.provider.Provider;
 
 /**
  *

@@ -3,13 +3,13 @@
  *
  * See <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
-package com.github.yadickson.autocert.initializer.ec;
+package com.github.yadickson.autocert.key.keypair.initializer.ec;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyPairGenerator;
 import java.security.spec.ECGenParameterSpec;
 
-import com.github.yadickson.autocert.initializer.KeyPairInitialize;
+import com.github.yadickson.autocert.key.keypair.initializer.KeyPairInitialize;
 
 /**
  *

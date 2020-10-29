@@ -1,6 +1,7 @@
-package com.github.yadickson.autocert.directory;
+package com.github.yadickson.autocert.writer.directory;
 
 import java.io.File;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

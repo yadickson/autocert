@@ -1,12 +1,13 @@
-package com.github.yadickson.autocert.algorithm;
+package com.github.yadickson.autocert.key.algorithm;
 
+import com.github.yadickson.autocert.key.algorithm.AlgorithmMapper;
+import com.github.yadickson.autocert.key.algorithm.AlgorithmNotSupportException;
+import com.github.yadickson.autocert.key.algorithm.Algorithm;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import com.github.yadickson.autocert.model.Algorithm;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AlgorithmMapperTest {
