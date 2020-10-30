@@ -6,10 +6,6 @@
 package com.github.yadickson.autocert;
 
 import java.io.File;
-import java.io.IOException;
-import java.security.KeyPair;
-import java.security.cert.Certificate;
-import java.security.spec.EncodedKeySpec;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -21,16 +17,10 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import com.github.yadickson.autocert.key.certificate.CertificateGenerator;
-import com.github.yadickson.autocert.key.keypair.KeyPairGenerator;
-import com.github.yadickson.autocert.key.privatekey.PrivateKeyGenerator;
-import com.github.yadickson.autocert.key.provider.Provider;
-import com.github.yadickson.autocert.key.provider.ProviderDecorator;
-import com.github.yadickson.autocert.key.publickey.PublicKeyGenerator;
-import com.github.yadickson.autocert.writer.certificate.CertificateWriter;
-import com.github.yadickson.autocert.writer.directory.DirectoryBuilder;
-import com.github.yadickson.autocert.writer.privatekey.PrivateKeyWriter;
-import com.github.yadickson.autocert.writer.publickey.PublicKeyWriter;
+import com.github.yadickson.autocert.directory.DirectoryBuilder;
+import com.github.yadickson.autocert.key.KeysGenerator;
+import com.github.yadickson.autocert.key.KeysResponse;
+import com.github.yadickson.autocert.writer.FilesGenerator;
 
 /**
  * Maven plugin to generate certificates in compilation time.
@@ -90,7 +80,7 @@ public final class GeneratorPlugin extends AbstractMojo {
             alias = "algorithm",
             required = false,
             defaultValue = "RSA")
-    private String algorithmConfig;
+    private String algorithm;
 
     /**
      * Algorithm.
@@ -100,7 +90,7 @@ public final class GeneratorPlugin extends AbstractMojo {
             alias = "keySize",
             required = false,
             defaultValue = "1024")
-    private Integer keySizeConfig;
+    private Integer keySize;
 
     /**
      * Signature.
@@ -110,7 +100,7 @@ public final class GeneratorPlugin extends AbstractMojo {
             alias = "signature",
             required = false,
             defaultValue = "SHA256withRSA")
-    private String signatureConfig;
+    private String signature;
 
     /**
      * Years validity.
@@ -160,7 +150,7 @@ public final class GeneratorPlugin extends AbstractMojo {
             alias = "outputDirectory",
             required = false,
             defaultValue = "${project.build.directory}/generated-resources")
-    private File outputDirectory;
+    private String outputDirectory;
 
     /**
      * Parameters configuration plugin.
@@ -168,29 +158,14 @@ public final class GeneratorPlugin extends AbstractMojo {
     private Parameters parameters;
 
     /**
-     * Custom directory.
+     * All keys generator.
      */
-    private String customDirectory;
+    private final KeysGenerator keysGenerator;
 
     /**
-     * Key pair generate.
+     * All files generator.
      */
-    private KeyPair keyPair;
-
-    /**
-     * Private key generate.
-     */
-    private EncodedKeySpec privateKey;
-
-    /**
-     * Public key generate.
-     */
-    private EncodedKeySpec publicKey;
-
-    /**
-     * Certificate generate.
-     */
-    private Certificate certificate;
+    private final FilesGenerator filesGenerator;
 
     /**
      * Directory builder.
@@ -203,61 +178,21 @@ public final class GeneratorPlugin extends AbstractMojo {
     private final CustomResource customResource;
 
     /**
-     * KeyPair generator.
+     * Keys response from keys generator.
      */
-    private final KeyPairGenerator keyPairGenerator;
-
-    /**
-     * Private key generator.
-     */
-    private final PrivateKeyGenerator privateKeyGenerator;
-
-    /**
-     * Public key generator.
-     */
-    private final PublicKeyGenerator publicKeyGenerator;
-
-    /**
-     * Certificate generator.
-     */
-    private final CertificateGenerator certificateGenerator;
-
-    /**
-     * Private key writer.
-     */
-    private final PrivateKeyWriter privateKeyWriter;
-
-    /**
-     * Public key writer.
-     */
-    private final PublicKeyWriter publicKeyWriter;
-
-    /**
-     * Certificate writer.
-     */
-    private final CertificateWriter certificateWriter;
+    private KeysResponse keysResponse;
 
     @Inject
     public GeneratorPlugin(
-            final KeyPairGenerator keyPairGenerator,
-            final PrivateKeyGenerator privateKeyGenerator,
-            final PublicKeyGenerator publicKeyGenerator,
-            final CertificateGenerator certificateGenerator,
+            final KeysGenerator keysGenerator,
+            final FilesGenerator filesGenerator,
             final DirectoryBuilder directoryBuilder,
-            final CustomResource customResource,
-            final PrivateKeyWriter privateKeyWriter,
-            final PublicKeyWriter publicKeyWriter,
-            final CertificateWriter certificateWriter
+            final CustomResource customResource
     ) {
-        this.keyPairGenerator = keyPairGenerator;
-        this.privateKeyGenerator = privateKeyGenerator;
-        this.publicKeyGenerator = publicKeyGenerator;
-        this.certificateGenerator = certificateGenerator;
+        this.keysGenerator = keysGenerator;
+        this.filesGenerator = filesGenerator;
         this.directoryBuilder = directoryBuilder;
         this.customResource = customResource;
-        this.privateKeyWriter = privateKeyWriter;
-        this.publicKeyWriter = publicKeyWriter;
-        this.certificateWriter = certificateWriter;
     }
 
     /**
@@ -269,31 +204,24 @@ public final class GeneratorPlugin extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException {
 
-        try (ProviderDecorator provider = new ProviderDecorator()) {
+        try {
 
             makeParameters();
             printParameters();
 
-            makeKeyPair(provider);
-            makePrivateKey();
-            makePublicKey();
-            makeCertificate(provider);
-
-            makeCustomResource();
+            makeKeys();
             makeCustomDirectory();
+            makeFiles();
+            makeCustomResource();
 
-            writePrivateKeyFile();
-            writePublicKeyFile();
-            writeCertificateFile();
-
-        } catch (IOException | RuntimeException ex) {
+        } catch (RuntimeException ex) {
             getLog().error(ex.getMessage(), ex);
             throw new MojoExecutionException("Execute error", ex);
         }
     }
 
     private void makeParameters() {
-        parameters = Optional.ofNullable(parameters).orElse(new Parameters(pubFilename, keyFilename, certFilename, algorithmConfig, keySizeConfig, signatureConfig, years, issuer, subject, directoryName, outputDirectory));
+        parameters = Optional.ofNullable(parameters).orElse(new Parameters(pubFilename, keyFilename, certFilename, algorithm, keySize, signature, years, issuer, subject, directoryName, outputDirectory));
     }
 
     private void printParameters() {
@@ -307,49 +235,26 @@ public final class GeneratorPlugin extends AbstractMojo {
         getLog().info("[Generator] Subject: " + parameters.getSubject());
         getLog().info("[Generator] Years: " + parameters.getYears());
         getLog().info("[Generator] DirectoryName: " + parameters.getDirectoryName());
-        getLog().info("[Generator] OutputDirectory: " + parameters.getOutputDirectory().getPath());
+        getLog().info("[Generator] OutputDirectory: " + parameters.getOutputDirectory());
     }
 
-    private void makeKeyPair(Provider provider) {
-        keyPair = keyPairGenerator.execute(provider, parameters);
-    }
-
-    private void makePrivateKey() {
-        privateKey = privateKeyGenerator.execute(keyPair);
-    }
-
-    private void makePublicKey() {
-        publicKey = publicKeyGenerator.execute(keyPair);
-    }
-
-    private void makeCertificate(Provider provider) {
-        certificate = certificateGenerator.execute(provider, keyPair, parameters);
+    private void makeKeys() {
+        keysResponse = keysGenerator.execute(parameters);
     }
 
     private void makeCustomResource() throws MojoExecutionException {
-        final String path = parameters.getOutputDirectory().getPath();
+        final String path = parameters.getOutputDirectory();
         directoryBuilder.execute(path);
         customResource.execute(mavenProject, path);
     }
 
     private void makeCustomDirectory() throws MojoExecutionException {
-        customDirectory = parameters.getOutputDirectory().getPath() + File.separator + parameters.getDirectoryName() + File.separator;
+        final String customDirectory = parameters.getOutputDirectory() + File.separator + parameters.getDirectoryName() + File.separator;
         directoryBuilder.execute(customDirectory);
     }
 
-    private void writePrivateKeyFile() {
-        String keyFilePath = customDirectory + parameters.getKeyFilename();
-        privateKeyWriter.execute(keyFilePath, privateKey);
-    }
-
-    private void writePublicKeyFile() {
-        String pubFilePath = customDirectory + parameters.getPubFilename();
-        publicKeyWriter.execute(pubFilePath, publicKey);
-    }
-
-    private void writeCertificateFile() {
-        String certFilePath = customDirectory + parameters.getCertFilename();
-        certificateWriter.execute(certFilePath, certificate);
+    private void makeFiles() {
+        filesGenerator.execute(parameters, keysResponse);
     }
 
     /**

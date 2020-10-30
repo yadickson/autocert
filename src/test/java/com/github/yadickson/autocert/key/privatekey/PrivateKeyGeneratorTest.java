@@ -49,7 +49,7 @@ public class PrivateKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(1024);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -64,7 +64,7 @@ public class PrivateKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(2048);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -79,7 +79,7 @@ public class PrivateKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(4096);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -94,7 +94,7 @@ public class PrivateKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -109,7 +109,7 @@ public class PrivateKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(384);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -124,7 +124,7 @@ public class PrivateKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(521);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -139,7 +139,7 @@ public class PrivateKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDH");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -154,7 +154,7 @@ public class PrivateKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDH");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(384);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -169,7 +169,7 @@ public class PrivateKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDH");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(521);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -184,7 +184,7 @@ public class PrivateKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDSA");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -199,7 +199,7 @@ public class PrivateKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDSA");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(384);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -214,7 +214,7 @@ public class PrivateKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDSA");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(521);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 

@@ -1,12 +1,5 @@
 package com.github.yadickson.autocert;
 
-import java.io.File;
-import java.security.KeyPair;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.cert.Certificate;
-import java.security.spec.EncodedKeySpec;
-
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
@@ -18,17 +11,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.yadickson.autocert.key.certificate.CertificateGenerator;
-import com.github.yadickson.autocert.key.certificate.CertificateGeneratorException;
-import com.github.yadickson.autocert.key.keypair.KeyPairGenerator;
-import com.github.yadickson.autocert.key.keypair.KeyPairGeneratorException;
-import com.github.yadickson.autocert.key.privatekey.PrivateKeyGenerator;
-import com.github.yadickson.autocert.key.provider.Provider;
-import com.github.yadickson.autocert.key.publickey.PublicKeyGenerator;
-import com.github.yadickson.autocert.writer.certificate.CertificateWriter;
-import com.github.yadickson.autocert.writer.directory.DirectoryBuilder;
-import com.github.yadickson.autocert.writer.privatekey.PrivateKeyWriter;
-import com.github.yadickson.autocert.writer.publickey.PublicKeyWriter;
+import com.github.yadickson.autocert.directory.DirectoryBuilder;
+import com.github.yadickson.autocert.directory.DirectoryBuilderException;
+import com.github.yadickson.autocert.key.KeysGenerator;
+import com.github.yadickson.autocert.key.KeysGeneratorException;
+import com.github.yadickson.autocert.key.KeysResponse;
+import com.github.yadickson.autocert.writer.FilesGenerator;
+import com.github.yadickson.autocert.writer.FilesGeneratorException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GeneratorPluginTest {
@@ -42,49 +31,19 @@ public class GeneratorPluginTest {
     private Log logMock;
 
     @Mock
-    private File outputDirectoryMock;
-
-    @Mock
-    private PublicKey publicKeyMock;
-
-    @Mock
-    private PrivateKey privateKeyMock;
-
-    @Mock
-    private EncodedKeySpec privateKeyEncodeMock;
-
-    @Mock
-    private EncodedKeySpec publicKeyEncodeMock;
-
-    @Mock
-    private Certificate certificateMock;
-
-    @Mock
     private DirectoryBuilder directoryBuilderMock;
 
     @Mock
     private CustomResource customResourceMock;
 
     @Mock
-    private KeyPairGenerator keyPairGeneratorMock;
+    private KeysGenerator keysGeneratorMock;
 
     @Mock
-    private PrivateKeyGenerator privateKeyGeneratorMock;
+    private FilesGenerator filesGeneratorMock;
 
     @Mock
-    private PublicKeyGenerator publicKeyGeneratorMock;
-
-    @Mock
-    private CertificateGenerator certificateGeneratorMock;
-
-    @Mock
-    private PrivateKeyWriter privateKeyWriterMock;
-
-    @Mock
-    private PublicKeyWriter publicKeyWriterMock;
-
-    @Mock
-    private CertificateWriter certificateWriterMock;
+    private KeysResponse keysResponseMock;
 
     private Parameters parametersMock;
 
@@ -106,18 +65,13 @@ public class GeneratorPluginTest {
     @Before
     public void setUp() {
         generatorPlugin = new GeneratorPlugin(
-                keyPairGeneratorMock,
-                privateKeyGeneratorMock,
-                publicKeyGeneratorMock,
-                certificateGeneratorMock,
+                keysGeneratorMock,
+                filesGeneratorMock,
                 directoryBuilderMock,
-                customResourceMock,
-                privateKeyWriterMock,
-                publicKeyWriterMock,
-                certificateWriterMock
+                customResourceMock
         );
 
-        parametersMock = new Parameters(PUBLIC_KEY_FILENAME, PRIVATE_KEY_FILENAME, CERTIFICATE_FILENAME, ALGORITHM, KEY_SIZE, SIGNATURE, YEARS, ISSUER, SUBJECT, DIRECTORY_NAME, outputDirectoryMock);
+        parametersMock = new Parameters(PUBLIC_KEY_FILENAME, PRIVATE_KEY_FILENAME, CERTIFICATE_FILENAME, ALGORITHM, KEY_SIZE, SIGNATURE, YEARS, ISSUER, SUBJECT, DIRECTORY_NAME, OUTPUT_DIRECTORY);
 
         generatorPlugin.setLog(logMock);
         generatorPlugin.setProject(projectMock);
@@ -126,8 +80,6 @@ public class GeneratorPluginTest {
 
     @Test
     public void test_logger_messages() throws MojoExecutionException {
-
-        Mockito.when(outputDirectoryMock.getPath()).thenReturn(OUTPUT_DIRECTORY);
 
         generatorPlugin.execute();
 
@@ -147,46 +99,33 @@ public class GeneratorPluginTest {
     @Test
     public void it_should_check_all_process() throws Exception {
 
-        KeyPair keyPairMock = new KeyPair(publicKeyMock, privateKeyMock);
-
-        Mockito.when(keyPairGeneratorMock.execute(Mockito.any(Provider.class), Mockito.same(parametersMock))).thenReturn(keyPairMock);
-        Mockito.when(privateKeyGeneratorMock.execute(Mockito.same(keyPairMock))).thenReturn(privateKeyEncodeMock);
-        Mockito.when(publicKeyGeneratorMock.execute(Mockito.same(keyPairMock))).thenReturn(publicKeyEncodeMock);
-        Mockito.when(certificateGeneratorMock.execute(Mockito.any(Provider.class), Mockito.same(keyPairMock), Mockito.same(parametersMock))).thenReturn(certificateMock);
+        Mockito.when(keysGeneratorMock.execute(Mockito.same(parametersMock))).thenReturn(keysResponseMock);
 
         generatorPlugin.execute();
 
-        InOrder inOrder = Mockito.inOrder(directoryBuilderMock, customResourceMock, keyPairGeneratorMock, privateKeyGeneratorMock, publicKeyGeneratorMock, certificateGeneratorMock, privateKeyWriterMock, publicKeyWriterMock, certificateWriterMock);
+        InOrder inOrder = Mockito.inOrder(keysGeneratorMock, directoryBuilderMock, filesGeneratorMock, customResourceMock);
 
-        inOrder.verify(keyPairGeneratorMock).execute(Mockito.any(Provider.class), Mockito.same(parametersMock));
-        inOrder.verify(privateKeyGeneratorMock).execute(Mockito.same(keyPairMock));
-        inOrder.verify(publicKeyGeneratorMock).execute(Mockito.same(keyPairMock));
-        inOrder.verify(certificateGeneratorMock).execute(Mockito.any(Provider.class), Mockito.same(keyPairMock), Mockito.same(parametersMock));
-
+        inOrder.verify(keysGeneratorMock).execute(Mockito.same(parametersMock));
         inOrder.verify(directoryBuilderMock).execute(Mockito.anyString());
+        inOrder.verify(filesGeneratorMock).execute(Mockito.same(parametersMock), Mockito.same(keysResponseMock));
         inOrder.verify(customResourceMock).execute(Mockito.same(projectMock), Mockito.anyString());
-
-        inOrder.verify(privateKeyWriterMock).execute(Mockito.anyString(), Mockito.same(privateKeyEncodeMock));
-        inOrder.verify(publicKeyWriterMock).execute(Mockito.anyString(), Mockito.same(publicKeyEncodeMock));
-        inOrder.verify(certificateWriterMock).execute(Mockito.anyString(), Mockito.same(certificateMock));
     }
 
     @Test(expected = MojoExecutionException.class)
-    public void it_should_throw_error_when_keypair_generator_exception() throws Exception {
-        Mockito.when(keyPairGeneratorMock.execute(Mockito.any(Provider.class), Mockito.same(parametersMock))).thenThrow(KeyPairGeneratorException.class);
+    public void it_should_throw_error_when_keys_generator_exception() throws Exception {
+        Mockito.when(keysGeneratorMock.execute(Mockito.same(parametersMock))).thenThrow(KeysGeneratorException.class);
         generatorPlugin.execute();
     }
 
     @Test(expected = MojoExecutionException.class)
-    public void it_should_throw_error_when_certificate_generator_excetion_exception() throws Exception {
+    public void it_should_throw_error_when_directory_builder_excetion_exception() throws Exception {
+        Mockito.doThrow(DirectoryBuilderException.class).when(directoryBuilderMock).execute(Mockito.anyString());
+        generatorPlugin.execute();
+    }
 
-        KeyPair keyPairMock = new KeyPair(publicKeyMock, privateKeyMock);
-
-        Mockito.when(keyPairGeneratorMock.execute(Mockito.any(Provider.class), Mockito.same(parametersMock))).thenReturn(keyPairMock);
-        Mockito.when(privateKeyGeneratorMock.execute(Mockito.same(keyPairMock))).thenReturn(privateKeyEncodeMock);
-        Mockito.when(publicKeyGeneratorMock.execute(Mockito.same(keyPairMock))).thenReturn(publicKeyEncodeMock);
-        Mockito.when(certificateGeneratorMock.execute(Mockito.any(Provider.class), Mockito.same(keyPairMock), Mockito.same(parametersMock))).thenThrow(CertificateGeneratorException.class);
-
+    @Test(expected = MojoExecutionException.class)
+    public void it_should_throw_error_when_files_generator_excetion_exception() throws Exception {
+        Mockito.doThrow(FilesGeneratorException.class).when(filesGeneratorMock).execute(Mockito.same(parametersMock), Mockito.any(KeysResponse.class));
         generatorPlugin.execute();
     }
 }

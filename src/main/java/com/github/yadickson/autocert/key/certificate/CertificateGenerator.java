@@ -46,9 +46,9 @@ public class CertificateGenerator {
     private static final String PREFIX = "cn=";
 
     public Certificate execute(
+            final Parameters parametersPlugin,
             final Provider provider,
-            final KeyPair keyPair,
-            final Parameters parametersPlugin
+            final KeyPair keyPair
     ) {
 
         try {

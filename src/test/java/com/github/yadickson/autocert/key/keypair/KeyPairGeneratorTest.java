@@ -46,7 +46,7 @@ public class KeyPairGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(1024);
 
-        KeyPair result = generator.execute(provider, parametersPluginMock);
+        KeyPair result = generator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -71,7 +71,7 @@ public class KeyPairGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(2048);
 
-        KeyPair result = generator.execute(provider, parametersPluginMock);
+        KeyPair result = generator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -96,7 +96,7 @@ public class KeyPairGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(4096);
 
-        KeyPair result = generator.execute(provider, parametersPluginMock);
+        KeyPair result = generator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -121,7 +121,7 @@ public class KeyPairGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
 
-        KeyPair result = generator.execute(provider, parametersPluginMock);
+        KeyPair result = generator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -146,7 +146,7 @@ public class KeyPairGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(384);
 
-        KeyPair result = generator.execute(provider, parametersPluginMock);
+        KeyPair result = generator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -171,7 +171,7 @@ public class KeyPairGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(521);
 
-        KeyPair result = generator.execute(provider, parametersPluginMock);
+        KeyPair result = generator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -196,7 +196,7 @@ public class KeyPairGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDH");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
 
-        KeyPair result = generator.execute(provider, parametersPluginMock);
+        KeyPair result = generator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -221,7 +221,7 @@ public class KeyPairGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDH");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(384);
 
-        KeyPair result = generator.execute(provider, parametersPluginMock);
+        KeyPair result = generator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -246,7 +246,7 @@ public class KeyPairGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDH");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(521);
 
-        KeyPair result = generator.execute(provider, parametersPluginMock);
+        KeyPair result = generator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -271,7 +271,7 @@ public class KeyPairGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDSA");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
 
-        KeyPair result = generator.execute(provider, parametersPluginMock);
+        KeyPair result = generator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -296,7 +296,7 @@ public class KeyPairGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDSA");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(384);
 
-        KeyPair result = generator.execute(provider, parametersPluginMock);
+        KeyPair result = generator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -321,7 +321,7 @@ public class KeyPairGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDSA");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(521);
 
-        KeyPair result = generator.execute(provider, parametersPluginMock);
+        KeyPair result = generator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -346,7 +346,7 @@ public class KeyPairGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDSA");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(1024);
 
-        generator.execute(provider, parametersPluginMock);
+        generator.execute(parametersPluginMock, provider);
     }
 
     @Test(expected = KeyPairGeneratorException.class)
@@ -355,7 +355,7 @@ public class KeyPairGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("HMAC");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(1024);
 
-        generator.execute(provider, parametersPluginMock);
+        generator.execute(parametersPluginMock, provider);
     }
 
 }

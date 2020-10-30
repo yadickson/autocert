@@ -5,8 +5,6 @@
  */
 package com.github.yadickson.autocert;
 
-import java.io.File;
-
 /**
  *
  * @author Yadickson Soto
@@ -23,9 +21,9 @@ public class Parameters {
     private final String issuer;
     private final String subject;
     private final String directoryName;
-    private final File outputDirectory;
+    private final String outputDirectory;
 
-    public Parameters(String pubFilename, String keyFilename, String certFilename, String algorithm, Integer keySize, String signature, Integer years, String issuer, String subject, String directoryName, File outputDirectory) {
+    public Parameters(String pubFilename, String keyFilename, String certFilename, String algorithm, Integer keySize, String signature, Integer years, String issuer, String subject, String directoryName, String outputDirectory) {
         this.pubFilename = pubFilename;
         this.keyFilename = keyFilename;
         this.certFilename = certFilename;
@@ -79,7 +77,7 @@ public class Parameters {
         return directoryName;
     }
 
-    public File getOutputDirectory() {
+    public String getOutputDirectory() {
         return outputDirectory;
     }
 

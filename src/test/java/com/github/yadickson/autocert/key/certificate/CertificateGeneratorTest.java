@@ -51,7 +51,7 @@ public class CertificateGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(1024);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         String signature = "SHA256withRSA";
         String issuer = "domain";
@@ -63,7 +63,7 @@ public class CertificateGeneratorTest {
         Mockito.when(parametersPluginMock.getIssuer()).thenReturn(issuer);
         Mockito.when(parametersPluginMock.getSubject()).thenReturn(subject);
 
-        Certificate result = generator.execute(provider, keyPair, parametersPluginMock);
+        Certificate result = generator.execute(parametersPluginMock, provider, keyPair);
 
         Assert.assertNotNull(result);
         Assert.assertNotNull(result.getEncoded());
@@ -83,7 +83,7 @@ public class CertificateGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         String signature = "SHA256withECDSA";
         String issuer = "domain";
@@ -95,7 +95,7 @@ public class CertificateGeneratorTest {
         Mockito.when(parametersPluginMock.getIssuer()).thenReturn(issuer);
         Mockito.when(parametersPluginMock.getSubject()).thenReturn(subject);
 
-        Certificate result = generator.execute(provider, keyPair, parametersPluginMock);
+        Certificate result = generator.execute(parametersPluginMock, provider, keyPair);
 
         Assert.assertNotNull(result);
         Assert.assertNotNull(result.getEncoded());
@@ -115,7 +115,7 @@ public class CertificateGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         String signature = "SHA256withRSA";
         String issuer = "domain";
@@ -127,7 +127,7 @@ public class CertificateGeneratorTest {
         Mockito.when(parametersPluginMock.getIssuer()).thenReturn(issuer);
         Mockito.when(parametersPluginMock.getSubject()).thenReturn(subject);
 
-        generator.execute(provider, keyPair, parametersPluginMock);
+        generator.execute(parametersPluginMock, provider, keyPair);
     }
 
 }

@@ -42,8 +42,8 @@ public class KeyPairGenerator {
     }
 
     public KeyPair execute(
-            final Provider provider,
-            final Parameters parameters
+            final Parameters parameters,
+            final Provider provider
     ) {
 
         try {

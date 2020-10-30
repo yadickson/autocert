@@ -1,4 +1,4 @@
-package com.github.yadickson.autocert.writer.directory;
+package com.github.yadickson.autocert.directory;
 
 import java.io.File;
 

@@ -62,7 +62,7 @@ public class SecrectKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(4096);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(keyPair);
 
@@ -101,7 +101,7 @@ public class SecrectKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(keyPair);
 
@@ -140,7 +140,7 @@ public class SecrectKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDH");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(keyPair);
 
@@ -179,7 +179,7 @@ public class SecrectKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDSA");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(keyPair);
 
@@ -218,7 +218,7 @@ public class SecrectKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(keyPair);
 
@@ -277,7 +277,7 @@ public class SecrectKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDH");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(keyPair);
 
@@ -333,7 +333,7 @@ public class SecrectKeyGeneratorTest {
         Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
         Mockito.when(parametersPluginMock.getKeySize()).thenReturn(2048);
 
-        KeyPair keyPair = keyPairGenerator.execute(provider, parametersPluginMock);
+        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
 
         Assert.assertNotNull(keyPair);
 
