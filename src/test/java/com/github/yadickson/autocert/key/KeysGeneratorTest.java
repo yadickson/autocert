@@ -16,7 +16,7 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.github.yadickson.autocert.Parameters;
+import com.github.yadickson.autocert.parameters.Parameters;
 import com.github.yadickson.autocert.key.certificate.CertificateGenerator;
 import com.github.yadickson.autocert.key.certificate.CertificateGeneratorException;
 import com.github.yadickson.autocert.key.keypair.KeyPairGenerator;

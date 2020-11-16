@@ -16,6 +16,9 @@ import com.github.yadickson.autocert.directory.DirectoryBuilderException;
 import com.github.yadickson.autocert.key.KeysGenerator;
 import com.github.yadickson.autocert.key.KeysGeneratorException;
 import com.github.yadickson.autocert.key.KeysResponse;
+import com.github.yadickson.autocert.parameters.InputInformation;
+import com.github.yadickson.autocert.parameters.OutputInformation;
+import com.github.yadickson.autocert.parameters.Parameters;
 import com.github.yadickson.autocert.writer.FilesGenerator;
 import com.github.yadickson.autocert.writer.FilesGeneratorException;
 
@@ -45,6 +48,12 @@ public class GeneratorPluginTest {
     @Mock
     private KeysResponse keysResponseMock;
 
+    @Mock
+    private InputInformation inputInformation;
+
+    @Mock
+    private OutputInformation outputInformation;
+
     private Parameters parametersMock;
 
     private static final String PUBLIC_KEY_FILENAME = "public-key-filename";
@@ -71,7 +80,20 @@ public class GeneratorPluginTest {
                 customResourceMock
         );
 
-        parametersMock = new Parameters(PUBLIC_KEY_FILENAME, PRIVATE_KEY_FILENAME, CERTIFICATE_FILENAME, ALGORITHM, KEY_SIZE, SIGNATURE, YEARS, ISSUER, SUBJECT, DIRECTORY_NAME, OUTPUT_DIRECTORY);
+        parametersMock = new Parameters(inputInformation, outputInformation);
+
+        Mockito.when(inputInformation.getAlgorithm()).thenReturn(ALGORITHM);
+        Mockito.when(inputInformation.getKeySize()).thenReturn(KEY_SIZE);
+        Mockito.when(inputInformation.getSignature()).thenReturn(SIGNATURE);
+        Mockito.when(inputInformation.getYears()).thenReturn(YEARS);
+        Mockito.when(inputInformation.getIssuer()).thenReturn(ISSUER);
+        Mockito.when(inputInformation.getSubject()).thenReturn(SUBJECT);
+
+        Mockito.when(outputInformation.getPubFilename()).thenReturn(PUBLIC_KEY_FILENAME);
+        Mockito.when(outputInformation.getKeyFilename()).thenReturn(PRIVATE_KEY_FILENAME);
+        Mockito.when(outputInformation.getCertFilename()).thenReturn(CERTIFICATE_FILENAME);
+        Mockito.when(outputInformation.getDirectoryName()).thenReturn(DIRECTORY_NAME);
+        Mockito.when(outputInformation.getOutputDirectory()).thenReturn(OUTPUT_DIRECTORY);
 
         generatorPlugin.setLog(logMock);
         generatorPlugin.setProject(projectMock);

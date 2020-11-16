@@ -12,14 +12,12 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.util.Base64;
 import javax.inject.Named;
-import javax.inject.Singleton;
 
 /**
  *
  * @author Yadickson Soto
  */
 @Named
-@Singleton
 public class CertificateWriter {
         
     public void execute(
@@ -36,7 +34,7 @@ public class CertificateWriter {
             writer.write(base64);
             writer.write("\n\r-----END CERTIFICATE-----");
 
-        } catch (RuntimeException | CertificateEncodingException | IOException ex) {
+        } catch (CertificateEncodingException | IOException ex) {
             throw new CertificateWriterException(ex);
         }
     }

@@ -1,6 +1,7 @@
 package com.github.yadickson.autocert.writer.publickey;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.security.spec.EncodedKeySpec;
 import java.util.Base64;
 import org.junit.Test;
@@ -58,13 +59,16 @@ public class PublicKeyWriterTest {
 
         final String filename = "filename";
         final byte[] encode = {' '};
+        final String body = "body";
 
         PowerMockito.whenNew(FileWriter.class).withArguments(filename).thenReturn(fileWriterMock);
         PowerMockito.mockStatic(Base64.class);
 
         Mockito.when(publicKeyMock.getEncoded()).thenReturn(encode);
         Mockito.when(Base64.getMimeEncoder()).thenReturn(base64encoderMock);
-        Mockito.when(base64encoderMock.encodeToString(Mockito.same(encode))).thenThrow(RuntimeException.class);
+        Mockito.when(base64encoderMock.encodeToString(Mockito.same(encode))).thenReturn(body);
+
+        Mockito.doThrow(IOException.class).when(fileWriterMock).write(Mockito.anyString());
 
         PublicKeyWriter instance = new PublicKeyWriter();
         instance.execute(filename, publicKeyMock);

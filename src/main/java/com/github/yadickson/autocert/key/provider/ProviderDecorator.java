@@ -9,7 +9,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.security.Security;
 import javax.inject.Named;
-import javax.inject.Singleton;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
@@ -18,7 +17,6 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
  * @author Yadickson Soto
  */
 @Named
-@Singleton
 public class ProviderDecorator extends Provider implements Closeable {
   
     public ProviderDecorator() {

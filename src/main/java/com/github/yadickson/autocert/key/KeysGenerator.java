@@ -12,9 +12,8 @@ import java.security.spec.EncodedKeySpec;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.inject.Singleton;
 
-import com.github.yadickson.autocert.Parameters;
+import com.github.yadickson.autocert.parameters.Parameters;
 import com.github.yadickson.autocert.key.certificate.CertificateGenerator;
 import com.github.yadickson.autocert.key.keypair.KeyPairGenerator;
 import com.github.yadickson.autocert.key.privatekey.PrivateKeyGenerator;
@@ -26,7 +25,6 @@ import com.github.yadickson.autocert.key.publickey.PublicKeyGenerator;
  * @author Yadickson Soto
  */
 @Named
-@Singleton
 public class KeysGenerator {
 
     private final KeyPairGenerator keyPairGenerator;

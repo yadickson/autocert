@@ -6,25 +6,26 @@
 package com.github.yadickson.autocert.key.algorithm;
 
 import java.util.Locale;
+import java.util.Optional;
 import java.util.function.Function;
 
 import javax.inject.Named;
-import javax.inject.Singleton;
 
 /**
  *
  * @author Yadickson Soto
  */
 @Named
-@Singleton
 public class AlgorithmMapper implements Function<String, Algorithm> {
+
+    private static final String EMPTY = "";
 
     @Override
     public Algorithm apply(final String algorithm) {
         try {
-            final String value = algorithm.trim().toUpperCase(Locale.US);
+            final String value = Optional.ofNullable(algorithm).orElse(EMPTY).trim().toUpperCase(Locale.US);
             return Algorithm.valueOf(value);
-        } catch (Exception ex) {
+        } catch (IllegalArgumentException ex) {
             throw new AlgorithmNotSupportException(ex);
         }
     }

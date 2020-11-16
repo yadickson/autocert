@@ -20,6 +20,9 @@ import org.apache.maven.project.MavenProject;
 import com.github.yadickson.autocert.directory.DirectoryBuilder;
 import com.github.yadickson.autocert.key.KeysGenerator;
 import com.github.yadickson.autocert.key.KeysResponse;
+import com.github.yadickson.autocert.parameters.InputInformation;
+import com.github.yadickson.autocert.parameters.OutputInformation;
+import com.github.yadickson.autocert.parameters.Parameters;
 import com.github.yadickson.autocert.writer.FilesGenerator;
 
 /**
@@ -152,9 +155,8 @@ public final class GeneratorPlugin extends AbstractMojo {
             defaultValue = "${project.build.directory}/generated-resources")
     private String outputDirectory;
 
-    /**
-     * Parameters configuration plugin.
-     */
+    private InputInformation inputInformation;
+    private OutputInformation outputInformation;
     private Parameters parameters;
 
     /**
@@ -208,11 +210,7 @@ public final class GeneratorPlugin extends AbstractMojo {
 
             makeParameters();
             printParameters();
-
-            makeKeys();
-            makeCustomDirectory();
-            makeFiles();
-            makeCustomResource();
+            generate();
 
         } catch (RuntimeException ex) {
             getLog().error(ex.getMessage(), ex);
@@ -221,21 +219,64 @@ public final class GeneratorPlugin extends AbstractMojo {
     }
 
     private void makeParameters() {
-        parameters = Optional.ofNullable(parameters).orElse(new Parameters(pubFilename, keyFilename, certFilename, algorithm, keySize, signature, years, issuer, subject, directoryName, outputDirectory));
+        parameters = Optional.ofNullable(parameters).orElse(buildParameters());
+    }
+
+    private Parameters buildParameters() {
+        makeInputInformation();
+        makeOutputInformation();
+        return new Parameters(inputInformation, outputInformation);
+    }
+
+    private void makeInputInformation() {
+        inputInformation = new InputInformation.Builder()
+                .algorithm(algorithm)
+                .keySize(keySize)
+                .signature(signature)
+                .years(years)
+                .issuer(issuer)
+                .subject(subject)
+                .build();
+    }
+
+    private void makeOutputInformation() {
+        outputInformation = new OutputInformation.Builder()
+                .pubFilename(pubFilename)
+                .keyFilename(keyFilename)
+                .certFilename(certFilename)
+                .directoryName(directoryName)
+                .outputDirectory(outputDirectory)
+                .build();
     }
 
     private void printParameters() {
-        getLog().info("[Generator] PubFile: " + parameters.getPubFilename());
-        getLog().info("[Generator] KeyFile: " + parameters.getKeyFilename());
-        getLog().info("[Generator] CertFile: " + parameters.getCertFilename());
-        getLog().info("[Generator] Algorithm: " + parameters.getAlgorithm());
-        getLog().info("[Generator] Signature: " + parameters.getSignature());
-        getLog().info("[Generator] KeySize: " + parameters.getKeySize());
-        getLog().info("[Generator] Issuer: " + parameters.getIssuer());
-        getLog().info("[Generator] Subject: " + parameters.getSubject());
-        getLog().info("[Generator] Years: " + parameters.getYears());
-        getLog().info("[Generator] DirectoryName: " + parameters.getDirectoryName());
-        getLog().info("[Generator] OutputDirectory: " + parameters.getOutputDirectory());
+        printInputInformation();
+        printOutputInformation();
+    }
+
+    private void printInputInformation() {
+
+        getLog().info("[Generator] Algorithm: " + parameters.getInput().getAlgorithm());
+        getLog().info("[Generator] Signature: " + parameters.getInput().getSignature());
+        getLog().info("[Generator] KeySize: " + parameters.getInput().getKeySize());
+        getLog().info("[Generator] Issuer: " + parameters.getInput().getIssuer());
+        getLog().info("[Generator] Subject: " + parameters.getInput().getSubject());
+        getLog().info("[Generator] Years: " + parameters.getInput().getYears());
+    }
+
+    private void printOutputInformation() {
+        getLog().info("[Generator] PubFile: " + parameters.getOutput().getPubFilename());
+        getLog().info("[Generator] KeyFile: " + parameters.getOutput().getKeyFilename());
+        getLog().info("[Generator] CertFile: " + parameters.getOutput().getCertFilename());
+        getLog().info("[Generator] DirectoryName: " + parameters.getOutput().getDirectoryName());
+        getLog().info("[Generator] OutputDirectory: " + parameters.getOutput().getOutputDirectory());
+    }
+
+    private void generate() throws MojoExecutionException {
+        makeKeys();
+        makeCustomDirectory();
+        makeFiles();
+        makeCustomResource();
     }
 
     private void makeKeys() {
@@ -243,13 +284,13 @@ public final class GeneratorPlugin extends AbstractMojo {
     }
 
     private void makeCustomResource() throws MojoExecutionException {
-        final String path = parameters.getOutputDirectory();
+        final String path = parameters.getOutput().getOutputDirectory();
         directoryBuilder.execute(path);
         customResource.execute(mavenProject, path);
     }
 
     private void makeCustomDirectory() throws MojoExecutionException {
-        final String customDirectory = parameters.getOutputDirectory() + File.separator + parameters.getDirectoryName() + File.separator;
+        final String customDirectory = parameters.getOutput().getOutputDirectory() + File.separator + parameters.getOutput().getDirectoryName() + File.separator;
         directoryBuilder.execute(customDirectory);
     }
 

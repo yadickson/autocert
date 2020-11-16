@@ -15,11 +15,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.yadickson.autocert.Parameters;
 import com.github.yadickson.autocert.key.algorithm.AlgorithmMapper;
 import com.github.yadickson.autocert.key.keypair.KeyPairGenerator;
 import com.github.yadickson.autocert.key.keypair.initializer.KeyPairInitializeFactory;
 import com.github.yadickson.autocert.key.provider.ProviderDecorator;
+import com.github.yadickson.autocert.parameters.InputInformation;
+import com.github.yadickson.autocert.parameters.Parameters;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CertificateGeneratorTest {
@@ -31,13 +32,18 @@ public class CertificateGeneratorTest {
     private KeyPairGenerator keyPairGenerator;
 
     @Mock
-    private Parameters parametersPluginMock;
+    private InputInformation inputInformationMock;
+
+    @Mock
+    private Parameters parametersMock;
 
     @Before
     public void setUp() {
         generator = new CertificateGenerator();
         provider = new ProviderDecorator();
         keyPairGenerator = new KeyPairGenerator(new AlgorithmMapper(), new KeyPairInitializeFactory());
+
+        Mockito.when(parametersMock.getInput()).thenReturn(inputInformationMock);
     }
 
     @After
@@ -48,22 +54,22 @@ public class CertificateGeneratorTest {
     @Test
     public void it_should_return_rsa_certificate() throws CertificateEncodingException {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(1024);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("RSA");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(1024);
 
-        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
+        KeyPair keyPair = keyPairGenerator.execute(parametersMock, provider);
 
         String signature = "SHA256withRSA";
         String issuer = "domain";
         String subject = "main";
         Integer years = 1;
 
-        Mockito.when(parametersPluginMock.getSignature()).thenReturn(signature);
-        Mockito.when(parametersPluginMock.getYears()).thenReturn(years);
-        Mockito.when(parametersPluginMock.getIssuer()).thenReturn(issuer);
-        Mockito.when(parametersPluginMock.getSubject()).thenReturn(subject);
+        Mockito.when(inputInformationMock.getSignature()).thenReturn(signature);
+        Mockito.when(inputInformationMock.getYears()).thenReturn(years);
+        Mockito.when(inputInformationMock.getIssuer()).thenReturn(issuer);
+        Mockito.when(inputInformationMock.getSubject()).thenReturn(subject);
 
-        Certificate result = generator.execute(parametersPluginMock, provider, keyPair);
+        Certificate result = generator.execute(parametersMock, provider, keyPair);
 
         Assert.assertNotNull(result);
         Assert.assertNotNull(result.getEncoded());
@@ -80,22 +86,22 @@ public class CertificateGeneratorTest {
     @Test
     public void it_should_return_ec_certificate() throws CertificateEncodingException {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("EC");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(256);
 
-        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
+        KeyPair keyPair = keyPairGenerator.execute(parametersMock, provider);
 
         String signature = "SHA256withECDSA";
         String issuer = "domain";
         String subject = "main";
         Integer years = 1;
 
-        Mockito.when(parametersPluginMock.getSignature()).thenReturn(signature);
-        Mockito.when(parametersPluginMock.getYears()).thenReturn(years);
-        Mockito.when(parametersPluginMock.getIssuer()).thenReturn(issuer);
-        Mockito.when(parametersPluginMock.getSubject()).thenReturn(subject);
+        Mockito.when(inputInformationMock.getSignature()).thenReturn(signature);
+        Mockito.when(inputInformationMock.getYears()).thenReturn(years);
+        Mockito.when(inputInformationMock.getIssuer()).thenReturn(issuer);
+        Mockito.when(inputInformationMock.getSubject()).thenReturn(subject);
 
-        Certificate result = generator.execute(parametersPluginMock, provider, keyPair);
+        Certificate result = generator.execute(parametersMock, provider, keyPair);
 
         Assert.assertNotNull(result);
         Assert.assertNotNull(result.getEncoded());
@@ -112,22 +118,22 @@ public class CertificateGeneratorTest {
     @Test(expected = CertificateGeneratorException.class)
     public void it_should_throw_error_when_signature_is_wrong() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("EC");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(256);
 
-        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
+        KeyPair keyPair = keyPairGenerator.execute(parametersMock, provider);
 
         String signature = "SHA256withRSA";
         String issuer = "domain";
         String subject = "main";
         Integer years = 1;
 
-        Mockito.when(parametersPluginMock.getSignature()).thenReturn(signature);
-        Mockito.when(parametersPluginMock.getYears()).thenReturn(years);
-        Mockito.when(parametersPluginMock.getIssuer()).thenReturn(issuer);
-        Mockito.when(parametersPluginMock.getSubject()).thenReturn(subject);
+        Mockito.when(inputInformationMock.getSignature()).thenReturn(signature);
+        Mockito.when(inputInformationMock.getYears()).thenReturn(years);
+        Mockito.when(inputInformationMock.getIssuer()).thenReturn(issuer);
+        Mockito.when(inputInformationMock.getSubject()).thenReturn(subject);
 
-        generator.execute(parametersPluginMock, provider, keyPair);
+        generator.execute(parametersMock, provider, keyPair);
     }
 
 }

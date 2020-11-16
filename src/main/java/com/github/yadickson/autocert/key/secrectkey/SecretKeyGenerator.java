@@ -16,7 +16,6 @@ import javax.crypto.KeyAgreement;
 import javax.crypto.SecretKey;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.inject.Singleton;
 
 import com.github.yadickson.autocert.key.algorithm.Algorithm;
 import com.github.yadickson.autocert.key.algorithm.AlgorithmMapper;
@@ -27,7 +26,6 @@ import com.github.yadickson.autocert.key.provider.Provider;
  * @author Yadickson Soto
  */
 @Named
-@Singleton
 public class SecretKeyGenerator {
 
     private final AlgorithmMapper algorithmMapper;

@@ -8,7 +8,6 @@ package com.github.yadickson.autocert.key.keypair.initializer;
 import java.util.function.Function;
 
 import javax.inject.Named;
-import javax.inject.Singleton;
 
 import com.github.yadickson.autocert.key.keypair.initializer.ec.KeyPairEcInitialize;
 import com.github.yadickson.autocert.key.keypair.initializer.rsa.KeyPairRsaInitialize;
@@ -19,7 +18,6 @@ import com.github.yadickson.autocert.key.algorithm.Algorithm;
  * @author Yadickson Soto
  */
 @Named
-@Singleton
 public class KeyPairInitializeFactory implements Function<Algorithm, KeyPairInitialize>{
 
     @Override
@@ -33,7 +31,7 @@ public class KeyPairInitializeFactory implements Function<Algorithm, KeyPairInit
             case ECDH:
                 return new KeyPairEcInitialize();
             default:
-                throw new KeyPairInitializeNotSupportException(algorithm.getMessage());
+                throw new KeyPairInitializeNotSupportException(algorithm.name());
         }
     }
 

@@ -11,14 +11,12 @@ import java.security.spec.EncodedKeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 
 import javax.inject.Named;
-import javax.inject.Singleton;
 
 /**
  *
  * @author Yadickson Soto
  */
 @Named
-@Singleton
 public class PrivateKeyGenerator {
 
     public EncodedKeySpec execute(final KeyPair keyPair) {

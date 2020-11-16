@@ -13,11 +13,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.yadickson.autocert.Parameters;
 import com.github.yadickson.autocert.key.algorithm.AlgorithmMapper;
 import com.github.yadickson.autocert.key.keypair.KeyPairGenerator;
 import com.github.yadickson.autocert.key.keypair.initializer.KeyPairInitializeFactory;
 import com.github.yadickson.autocert.key.provider.ProviderDecorator;
+import com.github.yadickson.autocert.parameters.InputInformation;
+import com.github.yadickson.autocert.parameters.Parameters;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PrivateKeyGeneratorTest {
@@ -29,13 +30,18 @@ public class PrivateKeyGeneratorTest {
     private KeyPairGenerator keyPairGenerator;
 
     @Mock
-    private Parameters parametersPluginMock;
+    private InputInformation inputInformationMock;
+
+    @Mock
+    private Parameters parametersMock;
 
     @Before
     public void setUp() {
         generator = new PrivateKeyGenerator();
         provider = new ProviderDecorator();
         keyPairGenerator = new KeyPairGenerator(new AlgorithmMapper(), new KeyPairInitializeFactory());
+
+        Mockito.when(parametersMock.getInput()).thenReturn(inputInformationMock);
     }
 
     @After
@@ -46,10 +52,10 @@ public class PrivateKeyGeneratorTest {
     @Test
     public void it_should_return_a_rsa_1024_private_key() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(1024);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("RSA");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(1024);
 
-        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
+        KeyPair keyPair = keyPairGenerator.execute(parametersMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -61,10 +67,10 @@ public class PrivateKeyGeneratorTest {
     @Test
     public void it_should_return_a_rsa_2048_private_key() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(2048);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("RSA");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(2048);
 
-        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
+        KeyPair keyPair = keyPairGenerator.execute(parametersMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -76,10 +82,10 @@ public class PrivateKeyGeneratorTest {
     @Test
     public void it_should_return_a_rsa_4096_private_key() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(4096);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("RSA");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(4096);
 
-        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
+        KeyPair keyPair = keyPairGenerator.execute(parametersMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -91,10 +97,10 @@ public class PrivateKeyGeneratorTest {
     @Test
     public void it_should_return_a_ec_256_private_key() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("EC");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(256);
 
-        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
+        KeyPair keyPair = keyPairGenerator.execute(parametersMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -106,10 +112,10 @@ public class PrivateKeyGeneratorTest {
     @Test
     public void it_should_return_a_ec_384_private_key() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(384);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("EC");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(384);
 
-        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
+        KeyPair keyPair = keyPairGenerator.execute(parametersMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -121,10 +127,10 @@ public class PrivateKeyGeneratorTest {
     @Test
     public void it_should_return_a_ec_521_private_key() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(521);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("EC");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(521);
 
-        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
+        KeyPair keyPair = keyPairGenerator.execute(parametersMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -136,10 +142,10 @@ public class PrivateKeyGeneratorTest {
     @Test
     public void it_should_return_a_ecdh_256_private_key() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDH");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("ECDH");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(256);
 
-        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
+        KeyPair keyPair = keyPairGenerator.execute(parametersMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -151,10 +157,10 @@ public class PrivateKeyGeneratorTest {
     @Test
     public void it_should_return_a_ecdh_384_private_key() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDH");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(384);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("ECDH");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(384);
 
-        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
+        KeyPair keyPair = keyPairGenerator.execute(parametersMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -166,10 +172,10 @@ public class PrivateKeyGeneratorTest {
     @Test
     public void it_should_return_a_ecdh_521_private_key() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDH");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(521);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("ECDH");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(521);
 
-        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
+        KeyPair keyPair = keyPairGenerator.execute(parametersMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -181,10 +187,10 @@ public class PrivateKeyGeneratorTest {
     @Test
     public void it_should_return_a_ecdsa_256_private_key() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDSA");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("ECDSA");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(256);
 
-        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
+        KeyPair keyPair = keyPairGenerator.execute(parametersMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -196,10 +202,10 @@ public class PrivateKeyGeneratorTest {
     @Test
     public void it_should_return_a_ecdsa_384_private_key() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDSA");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(384);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("ECDSA");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(384);
 
-        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
+        KeyPair keyPair = keyPairGenerator.execute(parametersMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 
@@ -211,10 +217,10 @@ public class PrivateKeyGeneratorTest {
     @Test
     public void it_should_return_a_ecdsa_521_private_key() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDSA");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(521);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("ECDSA");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(521);
 
-        KeyPair keyPair = keyPairGenerator.execute(parametersPluginMock, provider);
+        KeyPair keyPair = keyPairGenerator.execute(parametersMock, provider);
 
         EncodedKeySpec result = generator.execute(keyPair);
 

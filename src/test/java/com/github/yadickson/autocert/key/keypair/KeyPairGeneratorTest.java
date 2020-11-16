@@ -14,10 +14,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.yadickson.autocert.Parameters;
 import com.github.yadickson.autocert.key.algorithm.AlgorithmMapper;
 import com.github.yadickson.autocert.key.keypair.initializer.KeyPairInitializeFactory;
 import com.github.yadickson.autocert.key.provider.ProviderDecorator;
+import com.github.yadickson.autocert.parameters.InputInformation;
+import com.github.yadickson.autocert.parameters.Parameters;
 
 @RunWith(MockitoJUnitRunner.class)
 public class KeyPairGeneratorTest {
@@ -27,12 +28,17 @@ public class KeyPairGeneratorTest {
     private ProviderDecorator provider;
 
     @Mock
-    private Parameters parametersPluginMock;
+    private InputInformation inputInformationMock;
+
+    @Mock
+    private Parameters parametersMock;
 
     @Before
     public void setUp() {
         generator = new KeyPairGenerator(new AlgorithmMapper(), new KeyPairInitializeFactory());
         provider = new ProviderDecorator();
+
+        Mockito.when(parametersMock.getInput()).thenReturn(inputInformationMock);
     }
 
     @After
@@ -43,10 +49,10 @@ public class KeyPairGeneratorTest {
     @Test
     public void it_should_return_rsa_1024_key_pair() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(1024);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("RSA");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(1024);
 
-        KeyPair result = generator.execute(parametersPluginMock, provider);
+        KeyPair result = generator.execute(parametersMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -68,10 +74,10 @@ public class KeyPairGeneratorTest {
     @Test
     public void it_should_return_rsa_2048_key_pair() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(2048);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("RSA");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(2048);
 
-        KeyPair result = generator.execute(parametersPluginMock, provider);
+        KeyPair result = generator.execute(parametersMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -93,10 +99,10 @@ public class KeyPairGeneratorTest {
     @Test
     public void it_should_return_rsa_4096_key_pair() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("RSA");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(4096);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("RSA");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(4096);
 
-        KeyPair result = generator.execute(parametersPluginMock, provider);
+        KeyPair result = generator.execute(parametersMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -118,10 +124,10 @@ public class KeyPairGeneratorTest {
     @Test
     public void it_should_return_ec_256_key_pair() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("EC");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(256);
 
-        KeyPair result = generator.execute(parametersPluginMock, provider);
+        KeyPair result = generator.execute(parametersMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -143,10 +149,10 @@ public class KeyPairGeneratorTest {
     @Test
     public void it_should_return_ec_384_key_pair() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(384);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("EC");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(384);
 
-        KeyPair result = generator.execute(parametersPluginMock, provider);
+        KeyPair result = generator.execute(parametersMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -168,10 +174,10 @@ public class KeyPairGeneratorTest {
     @Test
     public void it_should_return_ec_521_key_pair() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("EC");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(521);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("EC");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(521);
 
-        KeyPair result = generator.execute(parametersPluginMock, provider);
+        KeyPair result = generator.execute(parametersMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -193,10 +199,10 @@ public class KeyPairGeneratorTest {
     @Test
     public void it_should_return_ecdh_256_key_pair() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDH");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("ECDH");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(256);
 
-        KeyPair result = generator.execute(parametersPluginMock, provider);
+        KeyPair result = generator.execute(parametersMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -218,10 +224,10 @@ public class KeyPairGeneratorTest {
     @Test
     public void it_should_return_ecdh_384_key_pair() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDH");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(384);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("ECDH");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(384);
 
-        KeyPair result = generator.execute(parametersPluginMock, provider);
+        KeyPair result = generator.execute(parametersMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -243,10 +249,10 @@ public class KeyPairGeneratorTest {
     @Test
     public void it_should_return_ecdh_521_key_pair() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDH");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(521);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("ECDH");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(521);
 
-        KeyPair result = generator.execute(parametersPluginMock, provider);
+        KeyPair result = generator.execute(parametersMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -268,10 +274,10 @@ public class KeyPairGeneratorTest {
     @Test
     public void it_should_return_ecdsa_256_key_pair() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDSA");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(256);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("ECDSA");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(256);
 
-        KeyPair result = generator.execute(parametersPluginMock, provider);
+        KeyPair result = generator.execute(parametersMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -293,10 +299,10 @@ public class KeyPairGeneratorTest {
     @Test
     public void it_should_return_ecdsa_384_key_pair() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDSA");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(384);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("ECDSA");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(384);
 
-        KeyPair result = generator.execute(parametersPluginMock, provider);
+        KeyPair result = generator.execute(parametersMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -318,10 +324,10 @@ public class KeyPairGeneratorTest {
     @Test
     public void it_should_return_ecdsa_521_key_pair() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDSA");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(521);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("ECDSA");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(521);
 
-        KeyPair result = generator.execute(parametersPluginMock, provider);
+        KeyPair result = generator.execute(parametersMock, provider);
 
         Assert.assertNotNull(result);
 
@@ -343,19 +349,19 @@ public class KeyPairGeneratorTest {
     @Test(expected = KeyPairGeneratorException.class)
     public void it_should_throw_error_when_key_size_is_not_support() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("ECDSA");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(1024);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("ECDSA");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(1024);
 
-        generator.execute(parametersPluginMock, provider);
+        generator.execute(parametersMock, provider);
     }
 
     @Test(expected = KeyPairGeneratorException.class)
     public void it_should_throw_error_when_algorithm_is_not_support() {
 
-        Mockito.when(parametersPluginMock.getAlgorithm()).thenReturn("HMAC");
-        Mockito.when(parametersPluginMock.getKeySize()).thenReturn(1024);
+        Mockito.when(inputInformationMock.getAlgorithm()).thenReturn("HMAC");
+        Mockito.when(inputInformationMock.getKeySize()).thenReturn(1024);
 
-        generator.execute(parametersPluginMock, provider);
+        generator.execute(parametersMock, provider);
     }
 
 }

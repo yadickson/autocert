@@ -11,20 +11,10 @@ package com.github.yadickson.autocert.key.algorithm;
  */
 public enum Algorithm {
 
-    RSA("RSA"),
-    EC("EC"),
-    ECDSA("ECDSA"),
-    ECDH("ECDH"),
-    OTHER("OTHER");
-
-    private final String message;
-
-    private Algorithm(final String message) {
-        this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
-    }
+    RSA,
+    EC,
+    ECDSA,
+    ECDH,
+    OTHER;
 
 }

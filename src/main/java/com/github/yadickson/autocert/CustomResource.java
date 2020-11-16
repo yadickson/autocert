@@ -6,7 +6,6 @@
 package com.github.yadickson.autocert;
 
 import javax.inject.Named;
-import javax.inject.Singleton;
 import org.apache.maven.model.Resource;
 import org.apache.maven.project.MavenProject;
 
@@ -15,7 +14,6 @@ import org.apache.maven.project.MavenProject;
  * @author Yadickson Soto
  */
 @Named
-@Singleton
 public class CustomResource {
 
     public void execute(final MavenProject mavenProject, final String path) {

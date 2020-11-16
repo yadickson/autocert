@@ -12,8 +12,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.yadickson.autocert.Parameters;
 import com.github.yadickson.autocert.key.KeysResponse;
+import com.github.yadickson.autocert.parameters.OutputInformation;
+import com.github.yadickson.autocert.parameters.Parameters;
 import com.github.yadickson.autocert.writer.certificate.CertificateWriter;
 import com.github.yadickson.autocert.writer.certificate.CertificateWriterException;
 import com.github.yadickson.autocert.writer.privatekey.PrivateKeyWriter;
@@ -36,7 +37,10 @@ public class FilesGeneratorTest {
     private CertificateWriter certificateWriterMock;
 
     @Mock
-    private Parameters parametersPluginMock;
+    private OutputInformation outputInformationMock;
+
+    @Mock
+    private Parameters parametersMock;
 
     @Mock
     private EncodedKeySpec privateKeyMock;
@@ -68,6 +72,8 @@ public class FilesGeneratorTest {
                 publicKeyWriterMock,
                 certificateWriterMock
         );
+
+        Mockito.when(parametersMock.getOutput()).thenReturn(outputInformationMock);
     }
 
     @Test
@@ -77,13 +83,13 @@ public class FilesGeneratorTest {
         Mockito.when(keysResponseMock.getPublicKey()).thenReturn(publicKeyMock);
         Mockito.when(keysResponseMock.getCertificate()).thenReturn(certificateMock);
 
-        Mockito.when(parametersPluginMock.getKeyFilename()).thenReturn(PRIVATE_NAME);
-        Mockito.when(parametersPluginMock.getPubFilename()).thenReturn(PUBLIC_NAME);
-        Mockito.when(parametersPluginMock.getCertFilename()).thenReturn(CERTIFICATE_NAME);
-        Mockito.when(parametersPluginMock.getDirectoryName()).thenReturn(DIRECTORY_NAME);
-        Mockito.when(parametersPluginMock.getOutputDirectory()).thenReturn(OUTPUT_DIRECTORY);
+        Mockito.when(outputInformationMock.getKeyFilename()).thenReturn(PRIVATE_NAME);
+        Mockito.when(outputInformationMock.getPubFilename()).thenReturn(PUBLIC_NAME);
+        Mockito.when(outputInformationMock.getCertFilename()).thenReturn(CERTIFICATE_NAME);
+        Mockito.when(outputInformationMock.getDirectoryName()).thenReturn(DIRECTORY_NAME);
+        Mockito.when(outputInformationMock.getOutputDirectory()).thenReturn(OUTPUT_DIRECTORY);
 
-        generator.execute(parametersPluginMock, keysResponseMock);
+        generator.execute(parametersMock, keysResponseMock);
 
         InOrder inOrder = Mockito.inOrder(privateKeyWriterMock, publicKeyWriterMock, certificateWriterMock);
 
@@ -95,19 +101,19 @@ public class FilesGeneratorTest {
     @Test(expected = FilesGeneratorException.class)
     public void it_should_throw_an_error_when_private_key_writer_exception() {
         Mockito.doThrow(PrivateKeyWriterException.class).when(privateKeyWriterMock).execute(Mockito.anyString(), Mockito.any(EncodedKeySpec.class));
-        generator.execute(parametersPluginMock, keysResponseMock);
+        generator.execute(parametersMock, keysResponseMock);
     }
 
     @Test(expected = FilesGeneratorException.class)
     public void it_should_throw_an_error_when_public_key_writer_exception() {
         Mockito.doThrow(PublicKeyWriterException.class).when(publicKeyWriterMock).execute(Mockito.anyString(), Mockito.any(EncodedKeySpec.class));
-        generator.execute(parametersPluginMock, keysResponseMock);
+        generator.execute(parametersMock, keysResponseMock);
     }
 
     @Test(expected = FilesGeneratorException.class)
     public void it_should_throw_an_error_when_certificate_writer_exception() {
         Mockito.doThrow(CertificateWriterException.class).when(certificateWriterMock).execute(Mockito.anyString(), Mockito.any(Certificate.class));
-        generator.execute(parametersPluginMock, keysResponseMock);
+        generator.execute(parametersMock, keysResponseMock);
     }
 
 }

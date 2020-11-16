@@ -11,14 +11,12 @@ import java.io.Writer;
 import java.security.spec.EncodedKeySpec;
 import java.util.Base64;
 import javax.inject.Named;
-import javax.inject.Singleton;
 
 /**
  *
  * @author Yadickson Soto
  */
 @Named
-@Singleton
 public class PrivateKeyWriter {
         
     public void execute(
@@ -35,7 +33,7 @@ public class PrivateKeyWriter {
             writer.write(base64);
             writer.write("\n\r-----END PRIVATE KEY-----");
 
-        } catch (RuntimeException | IOException ex) {
+        } catch (IOException ex) {
             throw new PrivateKeyWriterException(ex);
         }
     }

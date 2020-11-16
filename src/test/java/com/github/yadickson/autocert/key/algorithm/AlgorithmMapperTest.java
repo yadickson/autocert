@@ -90,6 +90,13 @@ public class AlgorithmMapperTest {
     }
 
     @Test(expected = AlgorithmNotSupportException.class)
+    public void it_should_throw_error_when_input_is_null() {
+        String algorithm = null;
+
+        mapper.apply(algorithm);
+    }
+
+    @Test(expected = AlgorithmNotSupportException.class)
     public void it_should_throw_error_when_input_is_not_supported() {
         String algorithm = "ABCD";
 

@@ -11,10 +11,10 @@ import java.security.spec.EncodedKeySpec;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.inject.Singleton;
 
-import com.github.yadickson.autocert.Parameters;
 import com.github.yadickson.autocert.key.KeysResponse;
+import com.github.yadickson.autocert.parameters.OutputInformation;
+import com.github.yadickson.autocert.parameters.Parameters;
 import com.github.yadickson.autocert.writer.certificate.CertificateWriter;
 import com.github.yadickson.autocert.writer.privatekey.PrivateKeyWriter;
 import com.github.yadickson.autocert.writer.publickey.PublicKeyWriter;
@@ -24,13 +24,13 @@ import com.github.yadickson.autocert.writer.publickey.PublicKeyWriter;
  * @author Yadickson Soto
  */
 @Named
-@Singleton
 public class FilesGenerator {
 
     private final PrivateKeyWriter privateKeyWriter;
     private final PublicKeyWriter publicKeyWriter;
     private final CertificateWriter certificateWriter;
 
+    private OutputInformation outputInformation;
     private String customDirectory;
 
     @Inject
@@ -44,34 +44,39 @@ public class FilesGenerator {
 
         try {
 
-            makeCustomDirectory(parameters);
-            makePrivateFile(parameters, keysResponse);
-            makePublicFile(parameters, keysResponse);
-            makeCertificateFile(parameters, keysResponse);
+            setOutputInformation(parameters);
+            makeCustomDirectory();
+            makePrivateFile(keysResponse);
+            makePublicFile(keysResponse);
+            makeCertificateFile(keysResponse);
 
         } catch (RuntimeException ex) {
             throw new FilesGeneratorException(ex);
         }
     }
 
-    private void makeCustomDirectory(final Parameters parameters) {
-        customDirectory = parameters.getOutputDirectory() + File.separator + parameters.getDirectoryName() + File.separator;
+    private void setOutputInformation(Parameters parameters) {
+        this.outputInformation = parameters.getOutput();
     }
 
-    private void makePrivateFile(final Parameters parameters, final KeysResponse keysResponse) {
-        final String keyFilePath = customDirectory + parameters.getKeyFilename();
+    private void makeCustomDirectory() {
+        customDirectory = outputInformation.getOutputDirectory() + File.separator + outputInformation.getDirectoryName() + File.separator;
+    }
+
+    private void makePrivateFile(final KeysResponse keysResponse) {
+        final String keyFilePath = customDirectory + outputInformation.getKeyFilename();
         final EncodedKeySpec privateKey = keysResponse.getPrivateKey();
         privateKeyWriter.execute(keyFilePath, privateKey);
     }
 
-    private void makePublicFile(final Parameters parameters, final KeysResponse keysResponse) {
-        final String pubFilePath = customDirectory + parameters.getPubFilename();
+    private void makePublicFile(final KeysResponse keysResponse) {
+        final String pubFilePath = customDirectory + outputInformation.getPubFilename();
         final EncodedKeySpec publicKey = keysResponse.getPublicKey();
         publicKeyWriter.execute(pubFilePath, publicKey);
     }
 
-    private void makeCertificateFile(final Parameters parameters, final KeysResponse keysResponse) {
-        final String certFilePath = customDirectory + parameters.getCertFilename();
+    private void makeCertificateFile(final KeysResponse keysResponse) {
+        final String certFilePath = customDirectory + outputInformation.getCertFilename();
         final Certificate certificate = keysResponse.getCertificate();
         certificateWriter.execute(certFilePath, certificate);
     }
