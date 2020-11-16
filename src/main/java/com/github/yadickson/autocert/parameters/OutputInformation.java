@@ -21,45 +21,54 @@ public class OutputInformation {
         return pubFilename;
     }
 
-    public OutputInformation pubFilename(String pubFilename) {
-        this.pubFilename = pubFilename;
-        return this;
-    }
-
     public String getKeyFilename() {
         return keyFilename;
-    }
-
-    public OutputInformation keyFilename(String keyFilename) {
-        this.keyFilename = keyFilename;
-        return this;
     }
 
     public String getCertFilename() {
         return certFilename;
     }
 
-    public OutputInformation certFilename(String certFilename) {
-        this.certFilename = certFilename;
-        return this;
-    }
-
     public String getDirectoryName() {
         return directoryName;
-    }
-
-    public OutputInformation directoryName(String directoryName) {
-        this.directoryName = directoryName;
-        return this;
     }
 
     public String getOutputDirectory() {
         return outputDirectory;
     }
 
-    public OutputInformation outputDirectory(String outputDirectory) {
-        this.outputDirectory = outputDirectory;
-        return this;
-    }
+    public static class Builder {
 
+        private final OutputInformation information = new OutputInformation();
+
+        public Builder pubFilename(String pubFilename) {
+            information.pubFilename = pubFilename;
+            return this;
+        }
+
+        public Builder keyFilename(String keyFilename) {
+            information.keyFilename = keyFilename;
+            return this;
+        }
+
+        public Builder certFilename(String certFilename) {
+            information.certFilename = certFilename;
+            return this;
+        }
+
+        public Builder directoryName(String directoryName) {
+            information.directoryName = directoryName;
+            return this;
+        }
+
+        public Builder outputDirectory(String outputDirectory) {
+            information.outputDirectory = outputDirectory;
+            return this;
+        }
+
+        public OutputInformation build() {
+            return information;
+        }
+
+    }
 }

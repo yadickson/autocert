@@ -22,54 +22,62 @@ public class InputInformation {
         return algorithm;
     }
 
-    public InputInformation algorithm(String algorithm) {
-        this.algorithm = algorithm;
-        return this;
-    }
-
     public Integer getKeySize() {
         return keySize;
-    }
-
-    public InputInformation keySize(Integer keySize) {
-        this.keySize = keySize;
-        return this;
     }
 
     public String getSignature() {
         return signature;
     }
 
-    public InputInformation signature(String signature) {
-        this.signature = signature;
-        return this;
-    }
-
     public Integer getYears() {
         return years;
-    }
-
-    public InputInformation years(Integer years) {
-        this.years = years;
-        return this;
     }
 
     public String getIssuer() {
         return issuer;
     }
 
-    public InputInformation issuer(String issuer) {
-        this.issuer = issuer;
-        return this;
-    }
-
     public String getSubject() {
         return subject;
     }
 
-    public InputInformation subject(String subject) {
-        this.subject = subject;
-        return this;
-    }
+    public static class Builder {
 
+        private final InputInformation information = new InputInformation();
+
+        public Builder algorithm(String algorithm) {
+            information.algorithm = algorithm;
+            return this;
+        }
+
+        public Builder keySize(Integer keySize) {
+            information.keySize = keySize;
+            return this;
+        }
+
+        public Builder signature(String signature) {
+            information.signature = signature;
+            return this;
+        }
+
+        public Builder years(Integer years) {
+            information.years = years;
+            return this;
+        }
+
+        public Builder issuer(String issuer) {
+            information.issuer = issuer;
+            return this;
+        }
+
+        public Builder subject(String subject) {
+            information.subject = subject;
+            return this;
+        }
+
+        public InputInformation build() {
+            return information;
+        }
+    }
 }

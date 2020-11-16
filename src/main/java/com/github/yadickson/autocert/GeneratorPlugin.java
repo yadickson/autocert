@@ -229,22 +229,24 @@ public final class GeneratorPlugin extends AbstractMojo {
     }
 
     private void makeInputInformation() {
-        inputInformation = new InputInformation()
+        inputInformation = new InputInformation.Builder()
                 .algorithm(algorithm)
                 .keySize(keySize)
                 .signature(signature)
                 .years(years)
                 .issuer(issuer)
-                .subject(subject);
+                .subject(subject)
+                .build();
     }
 
     private void makeOutputInformation() {
-        outputInformation = new OutputInformation()
+        outputInformation = new OutputInformation.Builder()
                 .pubFilename(pubFilename)
                 .keyFilename(keyFilename)
                 .certFilename(certFilename)
                 .directoryName(directoryName)
-                .outputDirectory(outputDirectory);
+                .outputDirectory(outputDirectory)
+                .build();
     }
 
     private void printParameters() {
