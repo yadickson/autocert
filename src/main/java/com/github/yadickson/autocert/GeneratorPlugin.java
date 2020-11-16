@@ -24,6 +24,8 @@ import com.github.yadickson.autocert.parameters.InputInformation;
 import com.github.yadickson.autocert.parameters.OutputInformation;
 import com.github.yadickson.autocert.parameters.Parameters;
 import com.github.yadickson.autocert.writer.FilesGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Maven plugin to generate certificates in compilation time.
@@ -35,6 +37,8 @@ import com.github.yadickson.autocert.writer.FilesGenerator;
         defaultPhase = LifecyclePhase.GENERATE_RESOURCES,
         requiresProject = true)
 public final class GeneratorPlugin extends AbstractMojo {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GeneratorPlugin.class);
 
     /**
      * The Maven Project.
@@ -213,7 +217,7 @@ public final class GeneratorPlugin extends AbstractMojo {
             generate();
 
         } catch (RuntimeException ex) {
-            getLog().error(ex.getMessage(), ex);
+            LOGGER.error(ex.getMessage(), ex);
             throw new MojoExecutionException("Execute error", ex);
         }
     }
@@ -256,20 +260,20 @@ public final class GeneratorPlugin extends AbstractMojo {
 
     private void printInputInformation() {
 
-        getLog().info("[Generator] Algorithm: " + parameters.getInput().getAlgorithm());
-        getLog().info("[Generator] Signature: " + parameters.getInput().getSignature());
-        getLog().info("[Generator] KeySize: " + parameters.getInput().getKeySize());
-        getLog().info("[Generator] Issuer: " + parameters.getInput().getIssuer());
-        getLog().info("[Generator] Subject: " + parameters.getInput().getSubject());
-        getLog().info("[Generator] Years: " + parameters.getInput().getYears());
+        LOGGER.info("[Generator] Algorithm: " + parameters.getInput().getAlgorithm());
+        LOGGER.info("[Generator] Signature: " + parameters.getInput().getSignature());
+        LOGGER.info("[Generator] KeySize: " + parameters.getInput().getKeySize());
+        LOGGER.info("[Generator] Issuer: " + parameters.getInput().getIssuer());
+        LOGGER.info("[Generator] Subject: " + parameters.getInput().getSubject());
+        LOGGER.info("[Generator] Years: " + parameters.getInput().getYears());
     }
 
     private void printOutputInformation() {
-        getLog().info("[Generator] PubFile: " + parameters.getOutput().getPubFilename());
-        getLog().info("[Generator] KeyFile: " + parameters.getOutput().getKeyFilename());
-        getLog().info("[Generator] CertFile: " + parameters.getOutput().getCertFilename());
-        getLog().info("[Generator] DirectoryName: " + parameters.getOutput().getDirectoryName());
-        getLog().info("[Generator] OutputDirectory: " + parameters.getOutput().getOutputDirectory());
+        LOGGER.info("[Generator] PubFile: " + parameters.getOutput().getPubFilename());
+        LOGGER.info("[Generator] KeyFile: " + parameters.getOutput().getKeyFilename());
+        LOGGER.info("[Generator] CertFile: " + parameters.getOutput().getCertFilename());
+        LOGGER.info("[Generator] DirectoryName: " + parameters.getOutput().getDirectoryName());
+        LOGGER.info("[Generator] OutputDirectory: " + parameters.getOutput().getOutputDirectory());
     }
 
     private void generate() throws MojoExecutionException {

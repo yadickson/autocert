@@ -101,21 +101,13 @@ public class GeneratorPluginTest {
     }
 
     @Test
-    public void test_logger_messages() throws MojoExecutionException {
+    public void test_logger_never_called() throws MojoExecutionException {
 
         generatorPlugin.execute();
 
-        Mockito.verify(logMock).info(Mockito.eq("[Generator] PubFile: " + PUBLIC_KEY_FILENAME));
-        Mockito.verify(logMock).info(Mockito.eq("[Generator] KeyFile: " + PRIVATE_KEY_FILENAME));
-        Mockito.verify(logMock).info(Mockito.eq("[Generator] CertFile: " + CERTIFICATE_FILENAME));
-        Mockito.verify(logMock).info(Mockito.eq("[Generator] Algorithm: " + ALGORITHM));
-        Mockito.verify(logMock).info(Mockito.eq("[Generator] Signature: " + SIGNATURE));
-        Mockito.verify(logMock).info(Mockito.eq("[Generator] KeySize: " + KEY_SIZE));
-        Mockito.verify(logMock).info(Mockito.eq("[Generator] Issuer: " + ISSUER));
-        Mockito.verify(logMock).info(Mockito.eq("[Generator] Subject: " + SUBJECT));
-        Mockito.verify(logMock).info(Mockito.eq("[Generator] Years: " + YEARS));
-        Mockito.verify(logMock).info(Mockito.eq("[Generator] DirectoryName: " + DIRECTORY_NAME));
-        Mockito.verify(logMock).info(Mockito.eq("[Generator] OutputDirectory: " + OUTPUT_DIRECTORY));
+        Mockito.verify(logMock, Mockito.never()).info(Mockito.anyString());
+        Mockito.verify(logMock, Mockito.never()).debug(Mockito.anyString());
+        Mockito.verify(logMock, Mockito.never()).warn(Mockito.anyString());
     }
 
     @Test
