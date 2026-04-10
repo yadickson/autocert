@@ -1,0 +1,17 @@
+name: Maven Build Process
+
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - "*"
+
+jobs:    
+
+  ci:
+    uses: yadickson/workflows/.github/workflows/integration.yml@v1
+    with:
+      container-image: maven:3.6.3-openjdk-8-slim
+    secrets: inherit
