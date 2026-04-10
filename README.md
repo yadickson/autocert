@@ -1,9 +1,11 @@
 # Maven Auto Certificate Generator Plugin
 
-[![TravisCI Status][travis-image]][travis-url]
-[![Codecov Status][codecov-image]][codecov-url]
-[![Central OSSRH][oss-nexus-image]][oss-nexus-url]
-[![Central Maven][central-image]][central-url]
+[![Maven](https://badges.mvnrepository.com/badge/com.github.yadickson/autocert/badge.svg?label=Maven)](https://mvnrepository.com/artifact/com.github.yadickson/autocert)
+![version](https://img.shields.io/endpoint?style=flat-square&url=https%3A%2F%2Fgist.githubusercontent.com%2Fyadickson%2Fcdde25b73dd583aa4209d97f440c4abd%2Fraw%2Fautocert-version.json)
+[![build](https://img.shields.io/github/actions/workflow/status/yadickson/autocert/ci.yml?branch=main&style=flat-square)](https://github.com/yadickson/autocert/actions/workflows/ci.yml)
+![tests](https://img.shields.io/endpoint?style=flat-square&url=https%3A%2F%2Fgist.githubusercontent.com%2Fyadickson%2Fcdde25b73dd583aa4209d97f440c4abd%2Fraw%2Fautocert-junit-tests.json)
+![coverage](https://img.shields.io/endpoint?style=flat-square&url=https%3A%2F%2Fgist.githubusercontent.com%2Fyadickson%2Fcdde25b73dd583aa4209d97f440c4abd%2Fraw%2Fautocert-cobertura-coverage.json)
+
 
 Maven plugin to generate certificate resources in compilation time.
 
@@ -130,15 +132,3 @@ License
 -------
 
 GPL-3.0 © [Yadickson Soto](https://github.com/yadickson)
-
-[travis-image]: https://travis-ci.org/yadickson/autocert.svg?branch=master
-[travis-url]: https://travis-ci.org/yadickson/autocert
-
-[codecov-image]: https://codecov.io/gh/yadickson/autocert/branch/master/graph/badge.svg?branch=master
-[codecov-url]: https://codecov.io/gh/yadickson/autocert
-
-[oss-nexus-image]: https://img.shields.io/nexus/r/https/oss.sonatype.org/com.github.yadickson/autocert.svg
-[oss-nexus-url]: https://oss.sonatype.org/#nexus-search;quick~autocert
-
-[central-image]: https://maven-badges.herokuapp.com/maven-central/com.github.yadickson/autocert/badge.svg
-[central-url]: https://maven-badges.herokuapp.com/maven-central/com.github.yadickson/autocert
